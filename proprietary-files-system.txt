@@ -128,8 +128,8 @@ product/etc/permissions/com.qualcomm.qti.imscmservice-V2.2-java.xml
 product/etc/permissions/dpmapi.xml
 product/etc/permissions/embms.xml
 product/etc/permissions/qcrilhook.xml
-product/etc/permissions/qti_telephony_hidl_wrapper.xml
-product/etc/permissions/qti_telephony_utils.xml
+#product/etc/permissions/qti_telephony_hidl_wrapper.xml
+#product/etc/permissions/qti_telephony_utils.xml
 product/etc/permissions/telephonyservice.xml
 product/etc/permissions/vendor.qti.hardware.data.connection-V1.0-java.xml
 product/etc/permissions/vendor.qti.hardware.data.connection-V1.1-java.xml
