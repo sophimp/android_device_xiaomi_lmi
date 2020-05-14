@@ -166,6 +166,8 @@ ro.hwui.text_large_cache_height=1024
 
 config.disable_rtt=true
 
+ro.product.model=lmi
+
 #Bringup properties
 persist.sys.force_sw_gles=1
 persist.vendor.radio.atfwd.start=true

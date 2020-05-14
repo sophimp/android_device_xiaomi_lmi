@@ -10,7 +10,7 @@ $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
 PRODUCT_BRAND := Redmi
 PRODUCT_DEVICE := lmi
-PRODUCT_MANUFACTURER := xiaomi
+PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_NAME := lineage_lmi
 PRODUCT_MODEL := Lmi
 

@@ -6,6 +6,10 @@ PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
+$(warning $(TARGET_COPY_OUT_VENDOR))
+$(warning $(TARGET_COPY_OUT_PRODUCT))
+$(warning $(TARGET_COPY_OUT_ODM))
+
 # Audio
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio/a2dp_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration.xml \
@@ -86,8 +90,6 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
     $(LOCAL_PATH)/overlay-lineage
 
-# A/B
-AB_OTA_UPDATER := false
 
 # Permissions
 PRODUCT_COPY_FILES += \
