@@ -2,12 +2,11 @@ DEVICE_PATH := device/xiaomi/lmi
 BOARD_VENDOR := xiaomi
 
 # Security patch level
-VENDOR_SECURITY_PATCH := 2020-05-13
+VENDOR_SECURITY_PATCH := 2020-03-18
 
 # HIDL
-DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
-DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/framework_compatibility_matrix.xml
+DDEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/vendor.qti.hardware.display.composer-service.xml
 
 # Architecture
 TARGET_ARCH := arm64
@@ -36,7 +35,7 @@ USE_XML_AUDIO_POLICY_CONF := 1
 #BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth/include
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := lmi
+TARGET_BOOTLOADER_BOARD_NAME := kona
 TARGET_NO_BOOTLOADER := true
 
 # Filesystem
@@ -46,10 +45,11 @@ TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 BOARD_KERNEL_BASE := 0x0000
 # get from unpack authentication boot.img
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm buildvariant=user
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-BOARD_KERNEL_CMDLINE += androidboot.selinux=enforcing
-BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
-BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
+#BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
+#BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=2.0
+#BOARD_KERNEL_CMDLINE += androidboot.selinux=enforcing
+#BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
+#BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_RAMDISK_OFFSET := 0x1000000
@@ -59,8 +59,9 @@ BOARD_KERNEL_OFFSET := 0x8000
 TARGET_KERNEL_ARCH := arm64
 # TODO: figure out why OSS DTB / DTBO do not work
 #TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb/08_dtbdump_Qualcomm_Technologies,_Inc._xiaomi_lmi.dtb
+#TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_KERNEL_SEPARATED_DTBO := true
-#BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+#BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
 
 #TARGET_BOARD_PLATFORM := sm8250
 #TARGET_BOARD_PLATFORM := kona
@@ -97,6 +98,7 @@ BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_ODM := odm
+BUILD_WITHOUT_VENDOR := true
 
 # dynamic partitions 
 BOARD_SUPER_PARTITION_BLOCK_DEVICES := product vendor system odm
@@ -110,7 +112,7 @@ BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE := 2880962560
 
 BOARD_SUPER_PARTITION_PRODUCT_DEVICE_SIZE := 1464336384
 
-BOARD_SUPER_PARTITION_ODM_DEVICE_SIZE := 482869248
+BOARD_SUPER_PARTITION_ODM_DEVICE_SIZE := 2097152	# 2M
 
 BOARD_DYNAMIC_PARTITIONS_OP_LIST := $(DEVICE_PATH)/dynamic_partitions_op_list
 # This is BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE + BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE
@@ -125,9 +127,9 @@ BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system product vendor odm
 
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 
-#BOARD_BOOTIMAGE_PARTITION_SIZE := 314572800 		# 300M
-#BOARD_DTBOIMG_PARTITION_SIZE := 33554432 			# 32M
-#BOARD_RECOVERYIMAGE_PARTITION_SIZE := 104857600 	# 100M
+BOARD_BOOTIMAGE_PARTITION_SIZE := 134217728			# 128M
+BOARD_DTBOIMG_PARTITION_SIZE := 33554432 			# 32M
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 134217728 	# 128M
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 123480309760  # 115G
 BOARD_CACHEIMAGE_PARTITION_SIZE := 	3758096384		# 3.5G
 
@@ -135,26 +137,21 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 	3758096384		# 3.5G
 #BOARD_VENDORIMAGE_PARTITION_SIZE := 1881219072		# 1.8G
 #BOARD_PRODUCTIMAGE_PARTITION_SIZE := 464351232		# 460M
 
-# android 10 中不可以设置
-#BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
-
-# Recovery
-#BOARD_INCLUDE_RECOVERY_DTBO := true
-#BOARD_USES_RECOVERY_AS_BOOT := true
-
 # acpio 与 dtbo 只能存在一个
 #BOARD_INCLUDE_RECOVERY_ACPIO := true
 
-# A/B
-AB_OTA_UPDATER := false
 # 非A/B更新
 BOARD_AB_UPDATE := false
+
 # build_super_image.py # BuildSuperImageFromDict
-BOARD_DYNAMIC_PARTITION_RETROFIT := true
+#BOARD_DYNAMIC_PARTITION_RETROFIT := true
 BOARD_BUILD_SYSTEM_ROOT_IAMGE := true
 BOARD_USES_RECOVERY_AS_ROOT := true
 
-#TARGET_NO_RECOVERY := true
+# Recovery
+BOARD_INCLUDE_RECOVERY_DTBO := true
+BOARD_USES_RECOVERY_AS_BOOT := false
+TARGET_NO_RECOVERY := false
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -162,7 +159,7 @@ TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USES_MKE2FS := true
 
 # Sepolicy
-#BOARD_PLAT_PRIVATE_SEPOLICY_DIR := $(DEVICE_PATH)/sepolicy/private
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR := $(DEVICE_PATH)/sepolicy/private
 
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
     device/qcom/sepolicy/generic/private \
@@ -178,11 +175,17 @@ TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 # Treble
 BOARD_VNDK_VERSION := current
 
+BOARD_USES_SYSTEM_AS_ROOT := true
+
 # Verified Boot
-#BOARD_AVB_ENABLE := true
+#BOARD_AVB_ALGORITHM := SHA512_RSA4096
+#BOARD_AVB_KEY_PATH := kernel/xiaomi/sm8250/certs/verity.x509.pem
+#BOARD_AVB_PUBKEY_PATH := $(DEVICE_PATH)/avb/q-gsi.avbpubkey
+
 #BOARD_BUILD_DISABLED_VBMETAIMAGE := true
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 
 # Properties
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
@@ -236,6 +239,9 @@ TARGET_ENABLE_MEDIADRM_64 := true
 #GNSS_HIDL_VERSION := 1.1
 #TARGET_NO_RPC := true
 #USE_DEVICE_SPECIFIC_GPS := true
+
+# NFC
+TARGET_USES_NQ_NFC := true
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true

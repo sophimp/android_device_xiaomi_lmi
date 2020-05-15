@@ -20,27 +20,6 @@ ifneq ($(filter lmi,$(TARGET_DEVICE)),)
 
 include $(CLEAR_VARS)
 
-#VENDOR_SYMLINKS := $(TARGET_OUT)/system/vendor
-#$(PRODUCT_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
-#	@echo "Creating vendor folder structure: $@"
-#	@rm -rf $@
-#	$(hide) ln -sf $@/vendor ../vendor 
-
-PRODUCT_SYMLINKS := $(TARGET_OUT)/system/product
-$(PRODUCT_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
-	@echo "Creating product folder structure: $@"
-	@rm -rf $@
-	$(hide) ln -sf $@/product ../product 
-
-ODM_SYMLINKS := $(TARGET_OUT)/system/odm
-$(ODM_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
-	@echo "Creating odm folder structure: $@"
-	@rm -rf $@
-	$(hide) ln -sf $@/odm ../odm 
-
-ALL_DEFAULT_INSTALLED_MODULES += \
-    $(PRODUCT_SYMLINKS) \
-    $(ODM_SYMLINKS) 
-
-include $(call all-makefiles-under,$(LOCAL_PATH))
+subdir_makefiles=$(call first-makefiles-under,$(LOCAL_PATH))
+$(foreach mk,$(subdir_makefiles),$(info including $(mk) ...)$(eval include $(mk)))
 endif

@@ -122,6 +122,7 @@ ro.telephony.default_cdma_sub=0
 #persist.dbg.volte_avail_ovr=1
 #persist.dbg.vt_avail_ovr=1
 persist.radio.VT_HYBRID_ENABLE=1
+persist.dbg.wfc_avail_ovr=1
 
 #set dpm related prop
 persist.vendor.dpm.feature=1

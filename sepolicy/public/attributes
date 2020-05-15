@@ -1,5 +1,0 @@
-hal_attribute(mlipay)
-
-hal_attribute(motor)
-
-hal_attribute(touchfeature)

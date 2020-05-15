@@ -1,14 +1,30 @@
 
-# dynamic partition
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
-$(warning $(TARGET_COPY_OUT_VENDOR))
-$(warning $(TARGET_COPY_OUT_PRODUCT))
-$(warning $(TARGET_COPY_OUT_ODM))
+# Inherit vendor
+$(call inherit-product, vendor/xiaomi/lmi/lmi-vendor.mk)
+
+# Shipping API level
+$(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
+
+#PRODUCT_TARGET_VNDK_VERSION := 29
+#PRODUCT_SHIPPING_API_LEVEL := 29
+
+# dynamic partition
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+#PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_BUILD_PRODUCT_IMAGE := true
+
+# Properties
+include $(LOCAL_PATH)/product_prop.mk
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+
+# A/B
+AB_OTA_UPDATER := false
 
 # Audio
 PRODUCT_COPY_FILES += \
@@ -90,6 +106,26 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
     $(LOCAL_PATH)/overlay-lineage
 
+#Camera
+PRODUCT_PACKAGES += \
+	Snap
+
+PRODUCT_PACKAGES += \
+    NotchNoFillOverlay
+
+# Overlays -- Override vendor ones
+PRODUCT_PACKAGES += \
+    FrameworksResCommon \
+    FrameworksResTarget \
+    DevicesOverlay \
+    DevicesAndroidOverlay
+
+# Device Settings
+PRODUCT_PACKAGES += \
+    DeviceSettings
+
+#PRODUCT_COPY_FILES += \
+    #$(LOCAL_PATH)/devicesettings/privapp-permissions-devicesettings.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-devicesettings.xml
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -181,9 +217,14 @@ PRODUCT_PACKAGES += \
     init.qcom.rc \
     init.qcom.usb.rc \
     init.target.rc \
-    fstab.qcom \
+    init.environ.rc \
+    init.exaid.hardware.rc \
     ueventd.qcom.rc \
 	fastbootd
+
+# fstab
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
 
 # Seccomp
 PRODUCT_COPY_FILES += \
@@ -275,10 +316,6 @@ PRODUCT_COPY_FILES += \
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService
-
-# Atrace
-PRODUCT_PACKAGES += \
-    android.hardware.atrace@1.0-service
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -436,9 +473,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += \
     telephony-ext
 
-# TextClassifier
+# Boot control
 PRODUCT_PACKAGES += \
-    textclassifier.bundle1
+    android.hardware.boot@1.0-service.rc
+
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -504,5 +544,3 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += \
     WfdCommon
 
-# Inherit vendor
-$(call inherit-product, vendor/xiaomi/lmi/lmi-vendor.mk)
