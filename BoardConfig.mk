@@ -48,6 +48,7 @@ BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom andro
 #BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=2.0
 #BOARD_KERNEL_CMDLINE += androidboot.selinux=enforcing
+BOARD_KERNEL_CMDLINE += androidboot.verifiedbootstate=orange
 #BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
 #BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
@@ -114,7 +115,6 @@ BOARD_SUPER_PARTITION_PRODUCT_DEVICE_SIZE := 1464336384
 
 BOARD_SUPER_PARTITION_ODM_DEVICE_SIZE := 2097152	# 2M
 
-BOARD_DYNAMIC_PARTITIONS_OP_LIST := $(DEVICE_PATH)/dynamic_partitions_op_list
 # This is BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE + BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE
 BOARD_SUPER_PARTITION_SIZE := 9126281216 
 
@@ -180,12 +180,16 @@ BOARD_USES_SYSTEM_AS_ROOT := true
 # Verified Boot
 #BOARD_AVB_ALGORITHM := SHA512_RSA4096
 #BOARD_AVB_KEY_PATH := kernel/xiaomi/sm8250/certs/verity.x509.pem
-#BOARD_AVB_PUBKEY_PATH := $(DEVICE_PATH)/avb/q-gsi.avbpubkey
 
 #BOARD_BUILD_DISABLED_VBMETAIMAGE := true
 BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
+#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
+BOARD_AVB_VBMETA_SYSTEM := system product odm vendor
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA512_RSA4096
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := 2
 
 # Properties
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
