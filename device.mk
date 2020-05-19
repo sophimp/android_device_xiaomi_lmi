@@ -154,14 +154,8 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
-    init.msm.usb.configfs.rc \
-    init.qcom.factory.rc \
+    init.recovery.qcom.rc \
     init.qcom.rc \
-    init.qcom.usb.rc \
-    init.target.rc \
-    init.environ.rc \
-    init.exaid.hardware.rc \
-    ueventd.qcom.rc \
 	fastbootd
 
 # fstab
