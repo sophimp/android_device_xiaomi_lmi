@@ -1,0 +1,15 @@
+ro.telephony.default_network=22,20
+
+ro.bionic.cpu_variant=cortex-a55
+dalvik.vm.isa.arm.variant=cortex-a55
+dalvik.vm.isa.arm64.variant=cortex-a55
+
+ro.sf.force_light_brightness=1
+
+ro.bluetooth.a2dp_offload.supported=false
+persist.bluetooth.a2dp_offload.disabled=true
+vendor.audio.feature.a2dp_offload.enable=false
+
+log.tag.bauth_FPBAuthService=I
+log.tag.bauth_FPQCBAuthSensorControl=I
+log.tag.bauth_TLC_Communicator=I

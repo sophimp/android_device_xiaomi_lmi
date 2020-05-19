@@ -12,7 +12,7 @@ PRODUCT_BRAND := Redmi
 PRODUCT_DEVICE := lmi
 PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_NAME := lineage_lmi
-PRODUCT_MODEL := Lmi
+PRODUCT_MODEL := Redmi K30 Pro
 
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 
@@ -28,7 +28,7 @@ PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
 PRODUCT_CHARACTERISTICS := nosdcard
 
 # Set BUILD_FINGERPRINT variable to be picked up by both system and vendor build.prop
-BUILD_FINGERPRINT := Redmi/lmi/lmi:10/QKQ1.191117.002/V11.0.16.0.QJKCNXM:user/release-keys
+BUILD_FINGERPRINT := "Redmi/lmi/lmi:10/QKQ1.191117.002/V11.0.16.0.QJKCNXM:user/release-keys"
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE=lmi \
