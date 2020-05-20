@@ -23,7 +23,6 @@ PRODUCT_BUILD_SUPER_PARTITION := false
 PRODUCT_BUILD_PRODUCT_IMAGE := true
 
 # Properties
-include $(LOCAL_PATH)/product_prop.mk
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 # A/B
@@ -154,8 +153,44 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
-    init.recovery.qcom.rc \
+    capture.sh \
+    capture_headset.sh \
+    init.class_main.sh \
+    init.crda.sh \
+    init.mdm.sh \
+    init.mi.usb.sh \
+    init.qcom.class_core.sh \
+    init.qcom.coex.sh \
+    init.qcom.crashdata.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.efs.sync.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.sdio.sh \
+    init.qcom.sensors.sh \
+    init.qcom.sh \
+    init.qcom.usb.sh \
+    init.qti.chg_policy.sh \
+    init.qti.fm.sh \
+    init.qti.ims.sh \
+    playback.sh \
+    playback_headset.sh \
+    qca6234-service.sh \
+    setup_backmic2headphone.sh \
+    setup_headsetmic2headphone.sh \
+    setup_headsetmic2receiver.sh \
+    setup_mainmic2headphone.sh \
+    setup_topmic2headphone.sh \
+    teardown_loopback.sh \
+    init.msm.usb.configfs.rc \
+    init.qcom.factory.rc \
     init.qcom.rc \
+    init.qcom.usb.rc \
+    init.target.rc \
+    fstab.qcom \
+    ueventd.qcom.rc \
+    init.recovery.qcom.rc \
+
+PRODUCT_PACKAGES += \
 	fastbootd
 
 # fstab
