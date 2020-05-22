@@ -496,6 +496,11 @@ product/etc/permissions/com.qti.dpmframework.xml
 product/etc/permissions/dpmapi.xml
 product/framework/com.qti.dpmframework.jar
 product/framework/dpmapi.jar
+product/lib/com.qualcomm.qti.dpm.api@1.0.so
+product/lib/libdpmctmgr.so
+product/lib/libdpmfdmgr.so
+product/lib/libdpmframework.so
+product/lib/libdpmtcm.so
 product/lib64/com.qualcomm.qti.dpm.api@1.0.so
 product/lib64/libdpmctmgr.so
 product/lib64/libdpmfdmgr.so
@@ -745,6 +750,7 @@ vendor/firmware/wlan/qca_cld/WCNSS_qcom_cfg.ini
 vendor/firmware/wlan/qca_cld/wlan_mac.bin
 
 # FM
+vendor/bin/ftmdaemon
 vendor/lib/ftm_fm_lib.so
 vendor/lib/vendor.qti.hardware.fm@1.0.so
 vendor/lib64/ftm_fm_lib.so
@@ -811,6 +817,7 @@ vendor/lib/libgsl.so
 vendor/lib/libllvm-glnext.so
 vendor/lib/libllvm-qcom.so
 vendor/lib/libOpenCL.so
+vendor/lib/libhdr_tm.so
 vendor/lib64/egl/eglSubDriverAndroid.so
 vendor/lib64/egl/libEGL_adreno.so
 vendor/lib64/egl/libGLESv1_CM_adreno.so
@@ -1067,6 +1074,8 @@ vendor/bin/hw/qcrild
 vendor/bin/adpl
 vendor/bin/netmgrd
 vendor/bin/qrtr-ns
+vendor/bin/qrtr-cfg
+vendor/bin/qrtr-lookup
 vendor/bin/qti
 vendor/bin/rmt_storage
 vendor/bin/tftp_server
@@ -1426,3 +1435,6 @@ vendor/lib64/libhdcp2p2prov.so
 vendor/lib64/libhdcpsrm.so
 vendor/lib64/libmm-hdcpmgr.so
 vendor/lib64/libwfdhdcpcp.so
+
+# DASH
+sbin/dashd:bin/dashd

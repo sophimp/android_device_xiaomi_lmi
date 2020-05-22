@@ -38,8 +38,7 @@ TARGET_NO_BOOTLOADER := true
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 
-BOARD_ROOT_EXTRA_FOLDERS := \
-    metadata 
+BOARD_ROOT_EXTRA_FOLDERS := metadata 
 
 # Kernel
 BOARD_KERNEL_BASE := 0x0000
@@ -47,7 +46,7 @@ BOARD_KERNEL_BASE := 0x0000
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm buildvariant=user
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=2.0
-#BOARD_KERNEL_CMDLINE += androidboot.selinux=enforcing
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 #BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
 #BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz
@@ -105,7 +104,7 @@ TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_ODM := odm
 BUILD_WITHOUT_VENDOR := true
 
-BOARD_AVB_VBMETA_SYSTEM := system 
+BOARD_AVB_VBMETA_SYSTEM := system product vendor odm
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
