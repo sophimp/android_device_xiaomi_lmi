@@ -225,7 +225,6 @@ vendor/lib/libcapiv2svacnn.so
 vendor/lib/libcapiv2svarnn.so
 vendor/lib/libcapiv2vop.so
 vendor/lib/libcom.qti.chinodeutils.so
-vendor/lib/libhdrdynamic.so
 vendor/lib/libhdrdynamicootf.so
 vendor/lib/libmegface.so
 vendor/lib/libMegviiFacepp-0.5.2.so
@@ -489,28 +488,20 @@ vendor/lib64/vendor.qti.hardware.capabilityconfigstore@1.0.so
 
 # DPM
 framework/tcmclient.jar
-product/bin/dpmd
+#product/bin/dpmd
 product/etc/dpm/dpm.conf
 product/etc/init/dpmd.rc
 product/etc/permissions/com.qti.dpmframework.xml
-product/etc/permissions/dpmapi.xml
+#product/etc/permissions/dpmapi.xml
 product/framework/com.qti.dpmframework.jar
 product/framework/dpmapi.jar
-product/lib/com.qualcomm.qti.dpm.api@1.0.so
-product/lib/libdpmctmgr.so
-product/lib/libdpmfdmgr.so
-product/lib/libdpmframework.so
-product/lib/libdpmtcm.so
-product/lib64/com.qualcomm.qti.dpm.api@1.0.so
-product/lib64/libdpmctmgr.so
-product/lib64/libdpmfdmgr.so
-product/lib64/libdpmframework.so
-product/lib64/libdpmtcm.so
+#product/lib/libdpmframework.so
+#product/lib64/libdpmframework.so
+#product/lib64/libdpmtcm.so
 -product/priv-app/dpmserviceapp/dpmserviceapp.apk
-vendor/bin/dpmQmiMgr
+#vendor/bin/dpmQmiMgr
 vendor/etc/init/dpmQmiMgr.rc
-vendor/lib64/com.qualcomm.qti.dpm.api@1.0.so
-vendor/lib64/libdpmqmihal.so
+#vendor/lib64/libdpmqmihal.so
 
 # DRM
 vendor/bin/qseecomd
@@ -559,7 +550,6 @@ vendor/lib/hw/gralloc.kona.so
 vendor/lib/hw/memtrack.kona.so
 vendor/lib/libgralloccore.so
 vendor/lib/libgrallocutils.so
-vendor/lib/libqdMetaData.so
 vendor/lib64/hw/android.hardware.graphics.mapper@3.0-impl-qti-display.so
 vendor/lib64/hw/gralloc.kona.so
 vendor/lib64/hw/memtrack.kona.so
@@ -570,7 +560,6 @@ vendor/lib64/libdpps.so
 vendor/lib64/libgpu_tonemapper.so
 vendor/lib64/libgralloccore.so
 vendor/lib64/libgrallocutils.so
-vendor/lib64/libqdMetaData.so
 vendor/lib64/libqdutils.so
 vendor/lib64/libqservice.so
 vendor/lib64/libsdm-colormgr-algo.so
@@ -817,7 +806,6 @@ vendor/lib/libgsl.so
 vendor/lib/libllvm-glnext.so
 vendor/lib/libllvm-qcom.so
 vendor/lib/libOpenCL.so
-vendor/lib/libhdr_tm.so
 vendor/lib64/egl/eglSubDriverAndroid.so
 vendor/lib64/egl/libEGL_adreno.so
 vendor/lib64/egl/libGLESv1_CM_adreno.so
@@ -831,7 +819,6 @@ vendor/lib64/libC2D2.so
 vendor/lib64/libc2d30_bltlib.so
 vendor/lib64/libCB.so
 vendor/lib64/libgsl.so
-vendor/lib64/libhdr_tm.so
 vendor/lib64/libllvm-glnext.so
 vendor/lib64/libllvm-qcom.so
 vendor/lib64/libOpenCL.so
@@ -1110,7 +1097,6 @@ vendor/lib64/libril-qc-ltedirectdisc.so
 vendor/lib64/libril-qc-radioconfig.so
 vendor/lib64/libril-qcril-hook-oem.so
 vendor/lib64/librilqmiservices.so
-vendor/lib64/librmnetctl.so
 vendor/lib64/libsettings.so
 vendor/lib64/libsystem_health_mon.so
 vendor/lib64/qcrild_librilutils.so
@@ -1342,7 +1328,6 @@ etc/init/wfdservice.rc
 etc/wfdconfigsink.xml
 -framework/WfdCommon.jar
 lib/com.qualcomm.qti.wifidisplayhal@1.0.so
-lib/libdisplayconfig.so
 lib/libFileMux.so
 lib/libmmosal.so
 lib/libmmparser_lite.so
@@ -1365,7 +1350,6 @@ lib/libwfduibcsink.so
 lib/libwfduibcsinkinterface.so
 lib/libwfduibcsrc.so
 lib/libwfduibcsrcinterface.so
-lib64/libdisplayconfig.so
 lib64/libFileMux.so
 lib64/libmmosal.so
 lib64/libmmparser_lite.so
@@ -1435,6 +1419,3 @@ vendor/lib64/libhdcp2p2prov.so
 vendor/lib64/libhdcpsrm.so
 vendor/lib64/libmm-hdcpmgr.so
 vendor/lib64/libwfdhdcpcp.so
-
-# DASH
-sbin/dashd:bin/dashd

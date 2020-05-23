@@ -16,11 +16,11 @@ $(call inherit-product, vendor/xiaomi/lmi/lmi-vendor.mk)
 # Shipping API level
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 
-PRODUCT_TARGET_VNDK_VERSION := 29
+#PRODUCT_TARGET_VNDK_VERSION := 29
 #PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_BUILD_SUPER_PARTITION := false
-PRODUCT_BUILD_PRODUCT_IMAGE := true
+#PRODUCT_BUILD_SUPER_PARTITION := false
+#PRODUCT_BUILD_PRODUCT_IMAGE := true
 
 # Properties
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
@@ -383,7 +383,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.0-service \
-    android.hardware.drm@1.2-service.clearkey
+    android.hardware.drm@1.2-service.clearkey \
+    android.hardware.drm@1.2-service.widevine
 
 # GPS
 PRODUCT_COPY_FILES += \

@@ -113,6 +113,8 @@ on early-boot
     chown system system /mnt/vendor/persist/data/pfm/licenses
     chmod 0775 /mnt/vendor/persist/data/pfm/licenses
 
+    mount none /system/lib64/vendor.lineage.biometrics.fingerprint.inscreen@1.0.so /vendor/lib64/vendor.lineage.biometrics.fingerprint.inscreen@1.0.so bind
+
 on boot
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
@@ -241,10 +243,17 @@ on boot
 
     #Create persist for camera calibration data
     mkdir /mnt/vendor/persist/camera 0755 system cameraserver
+ 
+    # Fingerprint
+    chown system system /sys/devices/platform/soc/soc:goodix_fp/proximity_state
+
+    # OTG
+    write /sys/class/power_supply/usb/otg_switch 1
 
 # msm specific files that need to be created on /data
 on post-fs-data
     mkdir /data/vendor/misc 01771 system system
+    mkdir /data/vendor/misc/sla 0770 system system
 
     # Create directory used for dump collection
     mkdir /data/vendor/ssrdump 0770 root system
@@ -494,7 +503,7 @@ on property:persist.vendor.ssr.restart_level=*
 on property:persist.vendor.ssr.enable_ramdumps=1
     write /sys/module/subsystem_restart/parameters/enable_ramdumps 1
     mkdir /data/vendor/ramdump_ssr 770 system system
-#   start vendor.ss_ramdump
+    start vendor.ss_ramdump
 
 on property:persist.vendor.ssr.enable_ramdumps=0
     write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
@@ -1057,6 +1066,12 @@ on charger
     wait /dev/block/bootdevice/by-name/system
     mount ext4 /dev/block/bootdevice/by-name/system / ro barrier=1
     setprop sys.usb.config adb
+    write /sys/class/backlight/panel0-backlight/brightness 200
+
+service dashd /system/bin/dashd
+    class core
+    critical
+    group root system
 
 #add poweroffhandler
 service poweroffhandler /system/vendor/bin/poweroffhandler
@@ -1167,3 +1182,10 @@ service vendor.contexthub-hal-1-0 /vendor/bin/hw/android.hardware.contexthub@1.0
     user system
     group system
     disabled
+
+#qfp fingerprint daemon
+service qfp-daemon /vendor/bin/qfp-daemon
+ 	class late_start
+ 	user system
+	group system drmrpc diag input
+
