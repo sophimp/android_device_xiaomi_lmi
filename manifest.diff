@@ -1,0 +1,1570 @@
+1,7c1,26
+< <!--
+<     Input:
+<         manifest_ds.xml
+<         manifest.xml
+<         manifest.xml
+<         manifest.xml
+<         manifest.xml
+---
+> <!-- Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+> 
+> Redistribution and use in source and binary forms, with or without
+> modification, are permitted provided that the following conditions are
+> met:
+>     * Redistributions of source code must retain the above copyright
+>       notice, this list of conditions and the following disclaimer.
+>     * Redistributions in binary form must reproduce the above
+>       copyright notice, this list of conditions and the following
+>       disclaimer in the documentation and/or other materials provided
+>       with the distribution.
+>     * Neither the name of The Linux Foundation nor the names of its
+>       contributors may be used to endorse or promote products derived
+>       from this software without specific prior written permission.
+> 
+> THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+> WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+> MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+> ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+> CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+> SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+> BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+> WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+> OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+> IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+10c29
+< 	
+---
+>     <!-- CapabilityConfigStore HAL Service  -->
+12,32c31
+<         <name>android.hardware.audio</name>
+<         <transport>hwbinder</transport>
+<         <version>5.0</version>
+<         <interface>
+<             <name>IDevicesFactory</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@5.0::IDevicesFactory/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.audio.effect</name>
+<         <transport>hwbinder</transport>
+<         <version>5.0</version>
+<         <interface>
+<             <name>IEffectsFactory</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@5.0::IEffectsFactory/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.authsecret</name>
+---
+>         <name>vendor.qti.hardware.capabilityconfigstore</name>
+36c35
+<             <name>IAuthSecret</name>
+---
+>             <name>ICapabilityConfigStore</name>
+39d37
+<         <fqname>@1.0::IAuthSecret/default</fqname>
+42c40
+<         <name>android.hardware.biometrics.fingerprint</name>
+---
+>         <name>android.hardware.health</name>
+44c42
+<         <version>2.1</version>
+---
+>         <version>2.0</version>
+46c44
+<             <name>IBiometricsFingerprint</name>
+---
+>             <name>IHealth</name>
+49d46
+<         <fqname>@2.1::IBiometricsFingerprint/default</fqname>
+52c49
+<         <name>android.hardware.bluetooth</name>
+---
+>         <name>android.hardware.audio</name>
+54c51
+<         <version>1.0</version>
+---
+>         <version>5.0</version>
+56c53
+<             <name>IBluetoothHci</name>
+---
+>             <name>IDevicesFactory</name>
+59d55
+<         <fqname>@1.0::IBluetoothHci/default</fqname>
+62c58
+<         <name>android.hardware.bluetooth.audio</name>
+---
+>         <name>android.hardware.audio.effect</name>
+64c60
+<         <version>2.0</version>
+---
+>         <version>5.0</version>
+66c62
+<             <name>IBluetoothAudioProvidersFactory</name>
+---
+>             <name>IEffectsFactory</name>
+69d64
+<         <fqname>@2.0::IBluetoothAudioProvidersFactory/default</fqname>
+72,82c67
+<         <name>android.hardware.camera.provider</name>
+<         <transport>hwbinder</transport>
+<         <version>2.4</version>
+<         <interface>
+<             <name>ICameraProvider</name>
+<             <instance>legacy/0</instance>
+<         </interface>
+<         <fqname>@2.4::ICameraProvider/legacy/0</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.configstore</name>
+---
+>         <name>android.hardware.soundtrigger</name>
+84c69
+<         <version>1.1</version>
+---
+>         <version>2.2</version>
+86c71
+<             <name>ISurfaceFlingerConfigs</name>
+---
+>             <name>ISoundTriggerHw</name>
+89d73
+<         <fqname>@1.1::ISurfaceFlingerConfigs/default</fqname>
+92c76
+<         <name>android.hardware.drm</name>
+---
+>         <name>android.hardware.media.omx</name>
+93a78
+>         <impl level="generic"></impl>
+96c81
+<             <name>ICryptoFactory</name>
+---
+>             <name>IOmx</name>
+100c85
+<             <name>IDrmFactory</name>
+---
+>             <name>IOmxStore</name>
+103,110d87
+<         <fqname>@1.0::ICryptoFactory/default</fqname>
+<         <fqname>@1.0::IDrmFactory/default</fqname>
+<         <fqname>@1.1::ICryptoFactory/wfdhdcp</fqname>
+<         <fqname>@1.1::IDrmFactory/wfdhdcp</fqname>
+<         <fqname>@1.2::ICryptoFactory/clearkey</fqname>
+<         <fqname>@1.2::ICryptoFactory/widevine</fqname>
+<         <fqname>@1.2::IDrmFactory/clearkey</fqname>
+<         <fqname>@1.2::IDrmFactory/widevine</fqname>
+111a89
+>     <!-- VPP Service -->
+113c91
+<         <name>android.hardware.dumpstate</name>
+---
+>         <name>vendor.qti.hardware.vpp</name>
+115c93
+<         <version>1.0</version>
+---
+>         <version>1.3</version>
+117,118c95,96
+<             <name>IDumpstateDevice</name>
+<             <instance>default</instance>
+---
+>             <name>IHidlVppService</name>
+>             <instance>vppService</instance>
+120d97
+<         <fqname>@1.0::IDumpstateDevice/default</fqname>
+122,123c99,101
+<     <hal format="hidl">
+<         <name>android.hardware.gatekeeper</name>
+---
+>     <!-- WFD HAL Service -->
+>     <hal format="hidl" optional="true">
+>         <name>vendor.qti.hardware.wifidisplaysession</name>
+127,128c105,106
+<             <name>IGatekeeper</name>
+<             <instance>default</instance>
+---
+>             <name>IWifiDisplaySession</name>
+>             <instance>wifidisplaysession</instance>
+130,135d107
+<         <fqname>@1.0::IGatekeeper/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.gnss</name>
+<         <transport>hwbinder</transport>
+<         <version>1.1</version>
+137,138c109,110
+<             <name>IGnss</name>
+<             <instance>default</instance>
+---
+>             <name>IWifiDisplaySessionVideoTrack</name>
+>             <instance>wifidisplaysessionvideotrack</instance>
+140,146d111
+<         <fqname>@1.0::IGnss/gnss_vendor</fqname>
+<         <fqname>@1.1::IGnss/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.health</name>
+<         <transport>hwbinder</transport>
+<         <version>2.0</version>
+148,149c113,114
+<             <name>IHealth</name>
+<             <instance>default</instance>
+---
+>             <name>IWifiDisplaySessionAudioTrack</name>
+>             <instance>wifidisplaysessionaudiotrack</instance>
+151,156d115
+<         <fqname>@2.0::IHealth/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.ir</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+158,159c117,118
+<             <name>IConsumerIr</name>
+<             <instance>default</instance>
+---
+>             <name>IWifiDisplaySessionImageTrack</name>
+>             <instance>wifidisplaysessionimagetrack</instance>
+161d119
+<         <fqname>@1.0::IConsumerIr/default</fqname>
+164c122
+<         <name>android.hardware.keymaster</name>
+---
+>         <name>android.hardware.configstore</name>
+166c124,125
+<         <version>4.0</version>
+---
+>         <impl level="generic"></impl>
+>         <version>1.1</version>
+168c127
+<             <name>IKeymasterDevice</name>
+---
+>             <name>ISurfaceFlingerConfigs</name>
+171d129
+<         <fqname>@4.0::IKeymasterDevice/default</fqname>
+181d138
+<         <fqname>@2.0::ILight/default</fqname>
+184c141
+<         <name>android.hardware.media.omx</name>
+---
+>         <name>android.hardware.vibrator</name>
+186,190c143
+<         <version>1.0</version>
+<         <interface>
+<             <name>IOmx</name>
+<             <instance>default</instance>
+<         </interface>
+---
+>         <version>1.2</version>
+192c145
+<             <name>IOmxStore</name>
+---
+>             <name>IVibrator</name>
+195,196d147
+<         <fqname>@1.0::IOmx/default</fqname>
+<         <fqname>@1.0::IOmxStore/default</fqname>
+206,272d156
+<         <fqname>@1.0::IMemtrack/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.neuralnetworks</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+<         <interface>
+<             <name>IDevice</name>
+<             <instance>qti-default</instance>
+<             <instance>qti-dsp</instance>
+<             <instance>qti-gpu</instance>
+<             <instance>qti-hta</instance>
+<         </interface>
+<         <fqname>@1.2::IDevice/qti-default</fqname>
+<         <fqname>@1.2::IDevice/qti-dsp</fqname>
+<         <fqname>@1.2::IDevice/qti-gpu</fqname>
+<         <fqname>@1.2::IDevice/qti-hta</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.nfc</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+<         <interface>
+<             <name>INfc</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.2::INfc/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.power</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+<         <interface>
+<             <name>IPower</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.2::IPower/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.radio</name>
+<         <transport>hwbinder</transport>
+<         <fqname>@1.2::ISap/slot1</fqname>
+<         <fqname>@1.2::ISap/slot2</fqname>
+<         <fqname>@1.4::IRadio/slot1</fqname>
+<         <fqname>@1.4::IRadio/slot2</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.radio.config</name>
+<         <transport>hwbinder</transport>
+<         <version>1.1</version>
+<         <interface>
+<             <name>IRadioConfig</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.1::IRadioConfig/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>android.hardware.secure_element</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+<         <interface>
+<             <name>ISecureElement</name>
+<             <instance>SIM1</instance>
+<             <instance>eSE1</instance>
+<         </interface>
+<         <fqname>@1.0::ISecureElement/SIM1</fqname>
+<         <fqname>@1.0::ISecureElement/eSE1</fqname>
+275c159
+<         <name>android.hardware.sensors</name>
+---
+>         <name>android.hardware.biometrics.face</name>
+279c163
+<             <name>ISensors</name>
+---
+>             <name>IBiometricsFace</name>
+282c166
+<         <fqname>@1.0::ISensors/default</fqname>
+---
+>         <fqname>@1.0::IBiometricsFace/default</fqname>
+283a168
+>     <!-- fingerprint hal: using remote service instead of Google's default service-->
+285c170
+<         <name>android.hardware.soundtrigger</name>
+---
+>         <name>android.hardware.biometrics.fingerprint</name>
+287c172
+<         <version>2.2</version>
+---
+>         <version>2.1</version>
+289c174
+<             <name>ISoundTriggerHw</name>
+---
+>             <name>IBiometricsFingerprint</name>
+292d176
+<         <fqname>@2.2::ISoundTriggerHw/default</fqname>
+295c179
+<         <name>android.hardware.tetheroffload.config</name>
+---
+>         <name>vendor.qti.hardware.fingerprint</name>
+299c183
+<             <name>IOffloadConfig</name>
+---
+>             <name>IQtiExtendedFingerprint</name>
+302d185
+<         <fqname>@1.0::IOffloadConfig/default</fqname>
+305,312c188,196
+<         <name>android.hardware.tetheroffload.control</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+<         <interface>
+<             <name>IOffloadControl</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.0::IOffloadControl/default</fqname>
+---
+>        <name>android.hardware.keymaster</name>
+>        <transport>hwbinder</transport>
+>        <impl level="generic"></impl>
+>        <version>4.0</version>
+>        <interface>
+>            <name>IKeymasterDevice</name>
+>            <instance>default</instance>
+>            <instance>strongbox</instance>
+>        </interface>
+315,322c199,206
+<         <name>android.hardware.thermal</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+<         <interface>
+<             <name>IThermal</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.0::IThermal/default</fqname>
+---
+>        <name>android.hardware.gatekeeper</name>
+>        <transport>hwbinder</transport>
+>        <impl level="generic"></impl>
+>        <version>1.0</version>
+>        <interface>
+>            <name>IGatekeeper</name>
+>            <instance>default</instance>
+>        </interface>
+325,332c209,215
+<         <name>android.hardware.vibrator</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+<         <interface>
+<             <name>IVibrator</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.2::IVibrator/default</fqname>
+---
+>        <name>android.hardware.authsecret</name>
+>        <transport>hwbinder</transport>
+>        <version>1.0</version>
+>        <interface>
+>            <name>IAuthSecret</name>
+>            <instance>default</instance>
+>        </interface>
+333a217
+>     <!-- NFC HAL service -->
+335c219
+<         <name>android.hardware.wifi</name>
+---
+>         <name>android.hardware.nfc</name>
+337c221
+<         <version>1.3</version>
+---
+>         <version>1.2</version>
+339c223
+<             <name>IWifi</name>
+---
+>             <name>INfc</name>
+342d225
+<         <fqname>@1.3::IWifi/default</fqname>
+345c228
+<         <name>android.hardware.wifi.hostapd</name>
+---
+>         <name>vendor.nxp.hardware.nfc</name>
+349c232
+<             <name>IHostapd</name>
+---
+>             <name>INqNfc</name>
+352d234
+<         <fqname>@1.1::IHostapd/default</fqname>
+353a236
+>     <!-- secure element -->
+355,362c238,246
+<         <name>android.hardware.wifi.supplicant</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+<         <interface>
+<             <name>ISupplicant</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.2::ISupplicant/default</fqname>
+---
+>        <name>android.hardware.secure_element</name>
+>        <transport>hwbinder</transport>
+>        <version>1.0</version>
+>        <interface>
+>            <name>ISecureElement</name>
+>            <instance>eSE1</instance>
+>            <instance>SIM1</instance>
+>            <instance>SIM2</instance>
+>        </interface>
+363a248
+>     <!-- eSEPowerManager -->
+365c250
+<         <name>com.qualcomm.qti.ant</name>
+---
+>         <name>vendor.qti.esepowermanager</name>
+369c254
+<             <name>IAntHci</name>
+---
+>             <name>IEsePowerManager</name>
+372d256
+<         <fqname>@1.0::IAntHci/default</fqname>
+373a258
+>     <!-- QSEECom HAL service -->
+375c260
+<         <name>com.qualcomm.qti.bluetooth_audio</name>
+---
+>         <name>vendor.qti.hardware.qseecom</name>
+379c264
+<             <name>IBluetoothAudio</name>
+---
+>             <name>IQSEECom</name>
+382d266
+<         <fqname>@1.0::IBluetoothAudio/default</fqname>
+383a268
+>     <!-- QTEEConnector HAL service -->
+385c270
+<         <name>com.qualcomm.qti.dpm.api</name>
+---
+>         <name>vendor.qti.hardware.qteeconnector</name>
+389,399c274
+<             <name>IdpmQmi</name>
+<             <instance>dpmQmiService</instance>
+<         </interface>
+<         <fqname>@1.0::IdpmQmi/dpmQmiService</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.goodix.hardware.biometrics.fingerprint</name>
+<         <transport>hwbinder</transport>
+<         <version>2.1</version>
+<         <interface>
+<             <name>IGoodixFingerprintDaemon</name>
+---
+>             <name>IAppConnector</name>
+402,407d276
+<         <fqname>@2.1::IGoodixFingerprintDaemon/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.nxp.hardware.nfc</name>
+<         <transport>hwbinder</transport>
+<         <version>1.1</version>
+409c278
+<             <name>INqNfc</name>
+---
+>             <name>IGPAppConnector</name>
+412d280
+<         <fqname>@1.1::INqNfc/default</fqname>
+415c283
+<         <name>vendor.qti.data.factory</name>
+---
+>         <name>android.hardware.wifi</name>
+417c285
+<         <version>2.1</version>
+---
+>         <version>1.3</version>
+419c287
+<             <name>IFactory</name>
+---
+>             <name>IWifi</name>
+422d289
+<         <fqname>@2.1::IFactory/default</fqname>
+425c292
+<         <name>vendor.qti.esepowermanager</name>
+---
+>         <name>vendor.qti.hardware.wifi.supplicant</name>
+427c294
+<         <version>1.0</version>
+---
+>         <version>2.0</version>
+429c296
+<             <name>IEsePowerManager</name>
+---
+>             <name>ISupplicantVendor</name>
+432,442d298
+<         <fqname>@1.0::IEsePowerManager/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.gnss</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+<         <interface>
+<             <name>ILocHidlGnss</name>
+<             <instance>gnss_vendor</instance>
+<         </interface>
+<         <fqname>@1.2::ILocHidlGnss/gnss_vendor</fqname>
+445,455c301
+<         <name>vendor.qti.gnss</name>
+<         <transport>hwbinder</transport>
+<         <version>2.1</version>
+<         <interface>
+<             <name>ILocHidlGnss</name>
+<             <instance>gnss_vendor</instance>
+<         </interface>
+<         <fqname>@2.1::ILocHidlGnss/gnss_vendor</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.alarm</name>
+---
+>         <name>vendor.qti.hardware.wifi.hostapd</name>
+457c303
+<         <version>1.0</version>
+---
+>         <version>1.1</version>
+459c305
+<             <name>IAlarm</name>
+---
+>             <name>IHostapdVendor</name>
+462d307
+<         <fqname>@1.0::IAlarm/default</fqname>
+465c310
+<         <name>vendor.qti.hardware.audiohalext</name>
+---
+>         <name>android.hardware.wifi.supplicant</name>
+467c312
+<         <version>1.0</version>
+---
+>         <version>1.2</version>
+469c314
+<             <name>IAudioHalExt</name>
+---
+>             <name>ISupplicant</name>
+472d316
+<         <fqname>@1.0::IAudioHalExt/default</fqname>
+475c319
+<         <name>vendor.qti.hardware.bluetooth_audio</name>
+---
+>         <name>android.hardware.wifi.hostapd</name>
+477c321
+<         <version>2.0</version>
+---
+>         <version>1.1</version>
+479c323
+<             <name>IBluetoothAudioProvidersFactory</name>
+---
+>             <name>IHostapd</name>
+482d325
+<         <fqname>@2.0::IBluetoothAudioProvidersFactory/default</fqname>
+485c328
+<         <name>vendor.qti.hardware.bluetooth_dun</name>
+---
+>         <name>android.hardware.drm</name>
+489c332
+<             <name>IBluetoothDunServer</name>
+---
+>             <name>ICryptoFactory</name>
+492,497d334
+<         <fqname>@1.0::IBluetoothDunServer/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.bluetooth_sar</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+499c336
+<             <name>IBluetoothSar</name>
+---
+>             <name>IDrmFactory</name>
+502c339,344
+<         <fqname>@1.0::IBluetoothSar/default</fqname>
+---
+>         <fqname>@1.2::ICryptoFactory/clearkey</fqname>
+>         <fqname>@1.2::IDrmFactory/clearkey</fqname>
+>         <fqname>@1.2::ICryptoFactory/widevine</fqname>
+>         <fqname>@1.2::IDrmFactory/widevine</fqname>
+>         <fqname>@1.1::ICryptoFactory/wfdhdcp</fqname>
+>         <fqname>@1.1::IDrmFactory/wfdhdcp</fqname>
+505c347
+<         <name>vendor.qti.hardware.btconfigstore</name>
+---
+>         <name>android.hardware.sensors</name>
+507c349
+<         <version>1.0</version>
+---
+>         <version>2.0</version>
+509c351
+<             <name>IBTConfigStore</name>
+---
+>             <name>ISensors</name>
+512d353
+<         <fqname>@1.0::IBTConfigStore/default</fqname>
+513a355
+>     <!-- SensorCal HAL service -->
+515c357
+<         <name>vendor.qti.hardware.cacert</name>
+---
+>         <name>vendor.qti.hardware.sensorscalibrate</name>
+519c361
+<             <name>IService</name>
+---
+>             <name>ISensorsCalibrate</name>
+522,532d363
+<         <fqname>@1.0::IService/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.camera.postproc</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+<         <interface>
+<             <name>IPostProcService</name>
+<             <instance>camerapostprocservice</instance>
+<         </interface>
+<         <fqname>@1.0::IPostProcService/camerapostprocservice</fqname>
+533a365
+>     <!-- IRADIO -->
+535c367
+<         <name>vendor.qti.hardware.capabilityconfigstore</name>
+---
+>         <name>android.hardware.radio</name>
+537,542c369,372
+<         <version>1.0</version>
+<         <interface>
+<             <name>ICapabilityConfigStore</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.0::ICapabilityConfigStore/default</fqname>
+---
+>         <fqname>@1.4::IRadio/slot1</fqname>
+>         <fqname>@1.4::IRadio/slot2</fqname>
+>         <fqname>@1.2::ISap/slot1</fqname>
+>         <fqname>@1.2::ISap/slot2</fqname>
+543a374
+>     <!-- RADIO CONFIG -->
+545c376
+<         <name>vendor.qti.hardware.data.connection</name>
+---
+>         <name>android.hardware.radio.config</name>
+549,551c380,381
+<             <name>IDataConnection</name>
+<             <instance>slot1</instance>
+<             <instance>slot2</instance>
+---
+>             <name>IRadioConfig</name>
+>             <instance>default</instance>
+553,554d382
+<         <fqname>@1.1::IDataConnection/slot1</fqname>
+<         <fqname>@1.1::IDataConnection/slot2</fqname>
+555a384,385
+> 
+>     <!-- RIL AUDIO HAL -->
+557c387
+<         <name>vendor.qti.hardware.data.iwlan</name>
+---
+>         <name>vendor.qti.hardware.radio.am</name>
+561c391
+<             <name>IIWlan</name>
+---
+>             <name>IQcRilAudio</name>
+565,566d394
+<         <fqname>@1.0::IIWlan/slot1</fqname>
+<         <fqname>@1.0::IIWlan/slot2</fqname>
+567a396,397
+> 
+>     <!-- radio ims -->
+569,609c399
+<         <name>vendor.qti.hardware.data.latency</name>
+<         <transport>hwbinder</transport>
+<         <version>1.0</version>
+<         <interface>
+<             <name>ILinkLatency</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.0::ILinkLatency/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.factory</name>
+<         <transport>hwbinder</transport>
+<         <version>1.1</version>
+<         <interface>
+<             <name>IFactory</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@1.1::IFactory/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.iop</name>
+<         <transport>hwbinder</transport>
+<         <version>2.0</version>
+<         <interface>
+<             <name>IIop</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@2.0::IIop/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.perf</name>
+<         <transport>hwbinder</transport>
+<         <version>2.0</version>
+<         <interface>
+<             <name>IPerf</name>
+<             <instance>default</instance>
+<         </interface>
+<         <fqname>@2.0::IPerf/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.qseecom</name>
+---
+>         <name>vendor.qti.hardware.radio.ims</name>
+611c401
+<         <version>1.0</version>
+---
+>         <version>1.5</version>
+613,614c403,405
+<             <name>IQSEECom</name>
+<             <instance>default</instance>
+---
+>             <name>IImsRadio</name>
+>             <instance>imsradio0</instance>
+>             <instance>imsradio1</instance>
+616d406
+<         <fqname>@1.0::IQSEECom/default</fqname>
+617a408,409
+> 
+>     <!-- dpm QMI hal service -->
+619c411
+<         <name>vendor.qti.hardware.qteeconnector</name>
+---
+>         <name>com.qualcomm.qti.dpm.api</name>
+623,628c415,416
+<             <name>IAppConnector</name>
+<             <instance>default</instance>
+<         </interface>
+<         <interface>
+<             <name>IGPAppConnector</name>
+<             <instance>default</instance>
+---
+>             <name>IdpmQmi</name>
+>             <instance>dpmQmiService</instance>
+630,631d417
+<         <fqname>@1.0::IAppConnector/default</fqname>
+<         <fqname>@1.0::IGPAppConnector/default</fqname>
+632a419,420
+> 
+>     <!-- qcrilhook -->
+634c422
+<         <name>vendor.qti.hardware.radio.am</name>
+---
+>         <name>vendor.qti.hardware.radio.qcrilhook</name>
+638,640c426,428
+<             <name>IQcRilAudio</name>
+<             <instance>slot1</instance>
+<             <instance>slot2</instance>
+---
+>             <name>IQtiOemHook</name>
+>             <instance>oemhook0</instance>
+>             <instance>oemhook1</instance>
+642,643d429
+<         <fqname>@1.0::IQcRilAudio/slot1</fqname>
+<         <fqname>@1.0::IQcRilAudio/slot2</fqname>
+644a431,432
+> 
+>     <!-- RIL UIM REMOTE CLIENT -->
+646c434
+<         <name>vendor.qti.hardware.radio.ims</name>
+---
+>         <name>vendor.qti.hardware.radio.uim_remote_client</name>
+648c436
+<         <version>1.5</version>
+---
+>         <version>1.0</version>
+650,652c438,440
+<             <name>IImsRadio</name>
+<             <instance>imsradio0</instance>
+<             <instance>imsradio1</instance>
+---
+>             <name>IUimRemoteServiceClient</name>
+>             <instance>uimRemoteClient0</instance>
+>             <instance>uimRemoteClient1</instance>
+654,655d441
+<         <fqname>@1.5::IImsRadio/imsradio0</fqname>
+<         <fqname>@1.5::IImsRadio/imsradio1</fqname>
+656a443,444
+> 
+>     <!-- RIL UIM REMOTE SERVER -->
+658c446
+<         <name>vendor.qti.hardware.radio.internal.deviceinfo</name>
+---
+>         <name>vendor.qti.hardware.radio.uim_remote_server</name>
+662,663c450,452
+<             <name>IDeviceInfo</name>
+<             <instance>deviceinfo</instance>
+---
+>             <name>IUimRemoteServiceServer</name>
+>             <instance>uimRemoteServer0</instance>
+>             <instance>uimRemoteServer1</instance>
+665d453
+<         <fqname>@1.0::IDeviceInfo/deviceinfo</fqname>
+666a455,456
+> 
+>     <!-- RIL UIM LPA -->
+676,677d465
+<         <fqname>@1.0::IUimLpa/UimLpa0</fqname>
+<         <fqname>@1.0::IUimLpa/UimLpa1</fqname>
+678a467,468
+> 
+>     <!-- RIL UIM -->
+680c470
+<         <name>vendor.qti.hardware.radio.qcrilhook</name>
+---
+>         <name>vendor.qti.hardware.radio.uim</name>
+682c472
+<         <version>1.0</version>
+---
+>         <version>1.2</version>
+684,686c474,476
+<             <name>IQtiOemHook</name>
+<             <instance>oemhook0</instance>
+<             <instance>oemhook1</instance>
+---
+>             <name>IUim</name>
+>             <instance>Uim0</instance>
+>             <instance>Uim1</instance>
+688,689d477
+<         <fqname>@1.0::IQtiOemHook/oemhook0</fqname>
+<         <fqname>@1.0::IQtiOemHook/oemhook1</fqname>
+690a479
+> 
+700,701d488
+<         <fqname>@1.0::IQtiRadio/slot1</fqname>
+<         <fqname>@1.0::IQtiRadio/slot2</fqname>
+702a490,512
+> 
+>    <!-- deviceInfo HAL -->
+>    <hal format="hidl">
+>         <name>vendor.qti.hardware.radio.internal.deviceinfo</name>
+>            <transport>hwbinder</transport>
+>            <version>1.0</version>
+>            <interface>
+>                <name>IDeviceInfo</name>
+>                <instance>deviceinfo</instance>
+>            </interface>
+>     </hal>
+> 
+>    <!-- IMS RTP Service -->
+>     <hal format="hidl">
+>         <name>vendor.qti.imsrtpservice</name>
+>         <transport>hwbinder</transport>
+>         <version>2.1</version>
+>         <interface>
+>             <name>IRTPService</name>
+>             <instance>imsrtpservice</instance>
+>         </interface>
+>     </hal>
+>     <!-- Hidl service for 5G network apis -->
+706c516
+<         <version>2.3</version>
+---
+>         <version>2.4</version>
+712,713d521
+<         <fqname>@2.3::IQtiRadio/slot1</fqname>
+<         <fqname>@2.3::IQtiRadio/slot2</fqname>
+715,716c523,554
+<     <hal format="hidl">
+<         <name>vendor.qti.hardware.radio.uim</name>
+---
+>    <!-- IMS UCE Service -->
+>    <hal format="hidl">
+>        <name>com.qualcomm.qti.uceservice</name>
+>        <transport>hwbinder</transport>
+>        <version>2.1</version>
+>        <interface>
+>          <name>IUceService</name>
+>          <instance>com.qualcomm.qti.uceservice</instance>
+>        </interface>
+>    </hal>
+>    <!-- IMS callinfo Service -->
+>    <hal format="hidl">
+>        <name>vendor.qti.ims.callinfo</name>
+>        <transport>hwbinder</transport>
+>        <version>1.0</version>
+>        <interface>
+>          <name>IService</name>
+>          <instance>default</instance>
+>        </interface>
+>    </hal>
+>    <!-- IMS CM Service -->
+>    <hal format="hidl">
+>        <name>com.qualcomm.qti.imscmservice</name>
+>        <transport>hwbinder</transport>
+>        <version>2.2</version>
+>        <interface>
+>          <name>IImsCmService</name>
+>          <instance>qti.ims.connectionmanagerservice</instance>
+>        </interface>
+>    </hal>
+>        <hal format="hidl">
+>         <name>vendor.qti.data.factory</name>
+718c556
+<         <version>1.2</version>
+---
+>         <version>2.1</version>
+720,722c558,559
+<             <name>IUim</name>
+<             <instance>Uim0</instance>
+<             <instance>Uim1</instance>
+---
+>             <name>IFactory</name>
+>             <instance>default</instance>
+724,725d560
+<         <fqname>@1.2::IUim/Uim0</fqname>
+<         <fqname>@1.2::IUim/Uim1</fqname>
+726a562
+>     <!-- Tether Offload -->
+728c564,583
+<         <name>vendor.qti.hardware.radio.uim_remote_client</name>
+---
+>       <name>android.hardware.tetheroffload.config</name>
+>       <transport>hwbinder</transport>
+>       <version>1.0</version>
+>       <interface>
+>           <name>IOffloadConfig</name>
+>           <instance>default</instance>
+>       </interface>
+>     </hal>
+> 
+>     <hal format="hidl">
+>       <name>android.hardware.tetheroffload.control</name>
+>       <transport>hwbinder</transport>
+>       <version>1.0</version>
+>       <interface>
+>           <name>IOffloadControl</name>
+>           <instance>default</instance>
+>       </interface>
+>     </hal>
+>     <hal format="hidl">
+>         <name>vendor.qti.hardware.data.iwlan</name>
+732,734c587,589
+<             <name>IUimRemoteServiceClient</name>
+<             <instance>uimRemoteClient0</instance>
+<             <instance>uimRemoteClient1</instance>
+---
+>             <name>IIWlan</name>
+>             <instance>slot1</instance>
+>             <instance>slot2</instance>
+736,737d590
+<         <fqname>@1.0::IUimRemoteServiceClient/uimRemoteClient0</fqname>
+<         <fqname>@1.0::IUimRemoteServiceClient/uimRemoteClient1</fqname>
+738a592
+>     <!-- Data Link Latency -->
+740c594
+<         <name>vendor.qti.hardware.radio.uim_remote_server</name>
+---
+>         <name>vendor.qti.hardware.data.latency</name>
+744,746c598,599
+<             <name>IUimRemoteServiceServer</name>
+<             <instance>uimRemoteServer0</instance>
+<             <instance>uimRemoteServer1</instance>
+---
+>             <name>ILinkLatency</name>
+>             <instance>default</instance>
+748,749d600
+<         <fqname>@1.0::IUimRemoteServiceServer/uimRemoteServer0</fqname>
+<         <fqname>@1.0::IUimRemoteServiceServer/uimRemoteServer1</fqname>
+752c603
+<         <name>vendor.qti.hardware.scve.objecttracker</name>
+---
+>         <name>vendor.qti.hardware.data.connection</name>
+754c605
+<         <version>1.0</version>
+---
+>         <version>1.1</version>
+756,757c607,609
+<             <name>IObjectTracker</name>
+<             <instance>objectTracker</instance>
+---
+>             <name>IDataConnection</name>
+>             <instance>slot1</instance>
+>             <instance>slot2</instance>
+759d610
+<         <fqname>@1.0::IObjectTracker/objectTracker</fqname>
+762c613
+<         <name>vendor.qti.hardware.scve.panorama</name>
+---
+>         <name>vendor.qti.hardware.cacert</name>
+766,767c617,618
+<             <name>IPanoramaStitching</name>
+<             <instance>panoStitching</instance>
+---
+>             <name>IService</name>
+>             <instance>default</instance>
+768a620,625
+>     </hal>
+>     <!-- Factory HAL service -->
+>     <hal format="hidl">
+>         <name>vendor.qti.hardware.factory</name>
+>         <transport>hwbinder</transport>
+>         <version>1.1</version>
+770,771c627,628
+<             <name>IPanoramaTracking</name>
+<             <instance>panoTracking</instance>
+---
+>             <name>IFactory</name>
+>             <instance>default</instance>
+773,774d629
+<         <fqname>@1.0::IPanoramaStitching/panoStitching</fqname>
+<         <fqname>@1.0::IPanoramaTracking/panoTracking</fqname>
+775a631
+>     <!-- Perf HAL service -->
+777c633
+<         <name>vendor.qti.hardware.sensorscalibrate</name>
+---
+>         <name>vendor.qti.hardware.perf</name>
+779c635
+<         <version>1.0</version>
+---
+>         <version>2.0</version>
+781c637
+<             <name>ISensorsCalibrate</name>
+---
+>             <name>IPerf</name>
+784d639
+<         <fqname>@1.0::ISensorsCalibrate/default</fqname>
+785a641
+>     <!-- IOP HAL service -->
+787c643
+<         <name>vendor.qti.hardware.soter</name>
+---
+>         <name>vendor.qti.hardware.iop</name>
+789c645
+<         <version>1.0</version>
+---
+>         <version>2.0</version>
+791c647
+<             <name>ISoter</name>
+---
+>             <name>IIop</name>
+794d649
+<         <fqname>@1.0::ISoter/default</fqname>
+795a651
+>     <!-- bluetooth -->
+797c653
+<         <name>vendor.qti.hardware.trustedui</name>
+---
+>         <name>android.hardware.bluetooth</name>
+801c657
+<             <name>ITrustedInput</name>
+---
+>             <name>IBluetoothHci</name>
+803a660,664
+>     </hal>
+>     <hal format="hidl">
+>         <name>android.hardware.bluetooth.audio</name>
+>         <transport>hwbinder</transport>
+>         <version>2.0</version>
+805c666
+<             <name>ITrustedUI</name>
+---
+>             <name>IBluetoothAudioProvidersFactory</name>
+808,809d668
+<         <fqname>@1.0::ITrustedInput/default</fqname>
+<         <fqname>@1.0::ITrustedUI/default</fqname>
+812c671,680
+<         <name>vendor.qti.hardware.tui_comm</name>
+---
+>         <name>vendor.qti.hardware.bluetooth_audio</name>
+>         <transport>hwbinder</transport>
+>         <version>2.0</version>
+>         <interface>
+>             <name>IBluetoothAudioProvidersFactory</name>
+>             <instance>default</instance>
+>         </interface>
+>     </hal>
+>     <hal format="hidl">
+>         <name>vendor.qti.hardware.btconfigstore</name>
+816c684
+<             <name>ITuiComm</name>
+---
+>             <name>IBTConfigStore</name>
+819d686
+<         <fqname>@1.0::ITuiComm/default</fqname>
+822c689
+<         <name>vendor.qti.hardware.vpp</name>
+---
+>         <name>vendor.qti.hardware.bluetooth_dun</name>
+824c691
+<         <version>1.3</version>
+---
+>         <version>1.0</version>
+826,827c693,694
+<             <name>IHidlVppService</name>
+<             <instance>vppService</instance>
+---
+>             <name>IBluetoothDunServer</name>
+>             <instance>default</instance>
+829d695
+<         <fqname>@1.3::IHidlVppService/vppService</fqname>
+830a697,698
+> 
+>     <!-- gnss -->
+832c700
+<         <name>vendor.qti.hardware.wifi.hostapd</name>
+---
+>         <name>android.hardware.gnss</name>
+836c704
+<             <name>IHostapdVendor</name>
+---
+>             <name>IGnss</name>
+839c707
+<         <fqname>@1.1::IHostapdVendor/default</fqname>
+---
+>         <fqname>@1.0::IGnss/gnss_vendor</fqname>
+842c710
+<         <name>vendor.qti.hardware.wifi.supplicant</name>
+---
+>         <name>vendor.qti.gnss</name>
+844c712
+<         <version>2.0</version>
+---
+>         <version>1.2</version>
+846,847c714,715
+<             <name>ISupplicantVendor</name>
+<             <instance>default</instance>
+---
+>             <name>ILocHidlGnss</name>
+>             <instance>gnss_vendor</instance>
+849d716
+<         <fqname>@2.0::ISupplicantVendor/default</fqname>
+852c719
+<         <name>vendor.qti.hardware.wifi.wifilearner</name>
+---
+>         <name>vendor.qti.gnss</name>
+854c721
+<         <version>1.0</version>
+---
+>         <version>2.1</version>
+856,857c723,724
+<             <name>IWifiStats</name>
+<             <instance>wifiStats</instance>
+---
+>             <name>ILocHidlGnss</name>
+>             <instance>gnss_vendor</instance>
+859d725
+<         <fqname>@1.0::IWifiStats/wifiStats</fqname>
+860a727
+>     <!--ANT-->
+862c729
+<         <name>vendor.qti.hardware.wifidisplaysession</name>
+---
+>         <name>com.qualcomm.qti.ant</name>
+866,867c733,734
+<             <name>IWifiDisplaySession</name>
+<             <instance>wifidisplaysession</instance>
+---
+>             <name>IAntHci</name>
+>             <instance>default</instance>
+868a736,742
+>     </hal>
+>     <!--ANT-->
+>     <!--TuiComm-->
+>     <hal format="hidl">
+>         <name>vendor.qti.hardware.tui_comm</name>
+>         <transport>hwbinder</transport>
+>         <version>1.0</version>
+870,871c744,745
+<             <name>IWifiDisplaySessionAudioTrack</name>
+<             <instance>wifidisplaysessionaudiotrack</instance>
+---
+>             <name>ITuiComm</name>
+>             <instance>default</instance>
+872a747,753
+>     </hal>
+>     <!--TuiComm-->
+>     <!--  Soter service -->
+>     <hal format="hidl">
+>         <name>vendor.qti.hardware.soter</name>
+>         <transport>hwbinder</transport>
+>         <version>1.0</version>
+874,875c755,756
+<             <name>IWifiDisplaySessionImageTrack</name>
+<             <instance>wifidisplaysessionimagetrack</instance>
+---
+>             <name>ISoter</name>
+>             <instance>default</instance>
+876a758,764
+>     </hal>
+>     <!--  Soter service -->
+>     <!-- Alarm HAL service -->
+>     <hal format="hidl">
+>         <name>vendor.qti.hardware.alarm</name>
+>         <transport>hwbinder</transport>
+>         <version>1.0</version>
+878,879c766,767
+<             <name>IWifiDisplaySessionVideoTrack</name>
+<             <instance>wifidisplaysessionvideotrack</instance>
+---
+>             <name>IAlarm</name>
+>             <instance>default</instance>
+881,884d768
+<         <fqname>@1.0::IWifiDisplaySession/wifidisplaysession</fqname>
+<         <fqname>@1.0::IWifiDisplaySessionAudioTrack/wifidisplaysessionaudiotrack</fqname>
+<         <fqname>@1.0::IWifiDisplaySessionImageTrack/wifidisplaysessionimagetrack</fqname>
+<         <fqname>@1.0::IWifiDisplaySessionVideoTrack/wifidisplaysessionvideotrack</fqname>
+885a770,771
+> 
+> 
+887c773
+<         <name>vendor.qti.imsrtpservice</name>
+---
+>         <name>android.hardware.camera.provider</name>
+889c775
+<         <version>2.1</version>
+---
+>         <version>2.4</version>
+891,892c777,778
+<             <name>IRTPService</name>
+<             <instance>imsrtpservice</instance>
+---
+>             <name>ICameraProvider</name>
+>             <instance>legacy/0</instance>
+894d779
+<         <fqname>@2.1::IRTPService/imsrtpservice</fqname>
+895a781,782
+> 
+>     <!-- Thermal HAL Service -->
+897c784
+<         <name>vendor.qti.qspmhal</name>
+---
+>         <name>android.hardware.thermal</name>
+901c788
+<             <name>IQspmhal</name>
+---
+>             <name>IThermal</name>
+904d790
+<         <fqname>@1.0::IQspmhal/default</fqname>
+905a792
+>     <!-- audio HAL extension service -->
+907c794
+<         <name>vendor.qti.sla.service</name>
+---
+>         <name>vendor.qti.hardware.audiohalext</name>
+911c798
+<             <name>ISlaService</name>
+---
+>             <name>IAudioHalExt</name>
+914d800
+<         <fqname>@1.0::ISlaService/default</fqname>
+915a802
+>     <!-- WIGIG HAL service -->
+917c804
+<         <name>vendor.qti.spu</name>
+---
+>         <name>vendor.qti.hardware.wigig.supptunnel</name>
+921c808
+<             <name>ISPUManager</name>
+---
+>             <name>ISuppTunnelProvider</name>
+924d810
+<         <fqname>@1.0::ISPUManager/default</fqname>
+925a812
+>     <!-- WIGIG network performance tuner service -->
+927c814
+<         <name>vendor.rongcard.hardware.eid</name>
+---
+>         <name>vendor.qti.hardware.wigig.netperftuner</name>
+931c818
+<             <name>IEidDevice</name>
+---
+>             <name>INetPerfTuner</name>
+934d820
+<         <fqname>@1.0::IEidDevice/default</fqname>
+935a822
+>     <!-- FST manager service -->
+937c824
+<         <name>vendor.xiaomi.hardware.antdtx</name>
+---
+>         <name>vendor.qti.hardware.fstman</name>
+941c828
+<             <name>IAntdtxService</name>
+---
+>             <name>IFstManager</name>
+944d830
+<         <fqname>@1.0::IAntdtxService/default</fqname>
+945a832,833
+> 
+>     <!-- Neural Network HAL -->
+947c835
+<         <name>vendor.xiaomi.hardware.citsensorservice</name>
+---
+>         <name>android.hardware.neuralnetworks</name>
+949c837
+<         <version>1.1</version>
+---
+>         <version>1.2</version>
+951,952c839,843
+<             <name>ICitSensorService</name>
+<             <instance>default</instance>
+---
+>             <name>IDevice</name>
+>             <instance>qti-default</instance>
+>             <instance>qti-dsp</instance>
+>             <instance>qti-gpu</instance>
+>             <instance>qti-hta</instance>
+954d844
+<         <fqname>@1.1::ICitSensorService/default</fqname>
+955a846
+>     <!-- SCVE Panorama hal services -->
+957c848
+<         <name>vendor.xiaomi.hardware.displayfeature</name>
+---
+>         <name>vendor.qti.hardware.scve.panorama</name>
+961,962c852,857
+<             <name>IDisplayFeature</name>
+<             <instance>default</instance>
+---
+>             <name>IPanoramaTracking</name>
+>             <instance>panoTracking</instance>
+>         </interface>
+>         <interface>
+>             <name>IPanoramaStitching</name>
+>             <instance>panoStitching</instance>
+964d858
+<         <fqname>@1.0::IDisplayFeature/default</fqname>
+967c861
+<         <name>vendor.xiaomi.hardware.fingerprintextension</name>
+---
+>         <name>vendor.qti.hardware.scve.objecttracker</name>
+971,972c865,866
+<             <name>IXiaomiFingerprint</name>
+<             <instance>default</instance>
+---
+>             <name>IObjectTracker</name>
+>             <instance>objectTracker</instance>
+974d867
+<         <fqname>@1.0::IXiaomiFingerprint/default</fqname>
+975a869
+>     <!-- WifiStats HAL service -->
+977c871
+<         <name>vendor.xiaomi.hardware.mfidoca</name>
+---
+>         <name>vendor.qti.hardware.wifi.wifilearner</name>
+981,982c875,876
+<             <name>IFidoService</name>
+<             <instance>default</instance>
+---
+>             <name>IWifiStats</name>
+>             <instance>wifiStats</instance>
+984d877
+<         <fqname>@1.0::IFidoService/default</fqname>
+985a879
+>     <!-- QSPM-HAL service-->
+987c881
+<         <name>vendor.xiaomi.hardware.misys</name>
+---
+>         <name>vendor.qti.qspmhal</name>
+991c885
+<             <name>IMiSys</name>
+---
+>             <name>IQspmhal</name>
+994d887
+<         <fqname>@1.0::IMiSys/default</fqname>
+995a889
+>     <!-- BluetoothSar service-->
+997c891
+<         <name>vendor.xiaomi.hardware.misys</name>
+---
+>         <name>vendor.qti.hardware.bluetooth_sar</name>
+999c893
+<         <version>2.0</version>
+---
+>         <version>1.0</version>
+1001c895
+<             <name>IMiSys</name>
+---
+>             <name>IBluetoothSar</name>
+1004d897
+<         <fqname>@2.0::IMiSys/default</fqname>
+1005a899
+>     <!-- Power HAL -->
+1007c901
+<         <name>vendor.xiaomi.hardware.misys</name>
+---
+>         <name>android.hardware.power</name>
+1009c903
+<         <version>3.0</version>
+---
+>         <version>1.2</version>
+1011c905
+<             <name>IMiSys</name>
+---
+>             <name>IPower</name>
+1013,1014c907
+<         </interface>
+<         <fqname>@3.0::IMiSys/default</fqname>
+---
+>        </interface>
+1017c910
+<         <name>vendor.xiaomi.hardware.mlipay</name>
+---
+>         <name>vendor.qti.power.pasrmanager</name>
+1019c912
+<         <version>1.1</version>
+---
+>         <version>1.0</version>
+1021c914
+<             <name>IMlipayService</name>
+---
+>             <name>IPasrManager</name>
+1024d916
+<         <fqname>@1.1::IMlipayService/default</fqname>
+1025a918
+>     <!-- Camera PostProcessing service -->
+1027c920
+<         <name>vendor.xiaomi.hardware.motor</name>
+---
+>         <name>vendor.qti.hardware.camera.postproc</name>
+1031,1032c924,925
+<             <name>IMotor</name>
+<             <instance>default</instance>
+---
+>             <name>IPostProcService</name>
+>             <instance>camerapostprocservice</instance>
+1034d926
+<         <fqname>@1.0::IMotor/default</fqname>
+1035a928
+>     <!-- Trusted UI HAL Service -->
+1037c930
+<         <name>vendor.xiaomi.hardware.mtdservice</name>
+---
+>         <name>vendor.qti.hardware.trustedui</name>
+1039c932
+<         <version>1.2</version>
+---
+>         <version>1.0</version>
+1041c934
+<             <name>IMTService</name>
+---
+>             <name>ITrustedUI</name>
+1044,1049d936
+<         <fqname>@1.2::IMTService/default</fqname>
+<     </hal>
+<     <hal format="hidl">
+<         <name>vendor.xiaomi.hardware.tidaservice</name>
+<         <transport>hwbinder</transport>
+<         <version>1.2</version>
+1051c938
+<             <name>ITidaService</name>
+---
+>             <name>ITrustedInput</name>
+1054d940
+<         <fqname>@1.2::ITidaService/default</fqname>
+1055a942
+>     <!-- SPU service-->
+1057c944
+<         <name>vendor.xiaomi.hardware.touchfeature</name>
+---
+>         <name>vendor.qti.spu</name>
+1061c948
+<             <name>ITouchFeature</name>
+---
+>             <name>ISPUManager</name>
+1064d950
+<         <fqname>@1.0::ITouchFeature/default</fqname>
+1065a952
+>     <!-- eMBMS HAL Service -->
+1067c954
+<         <name>vendor.xiaomi.hardware.vibratorfeature</name>
+---
+>         <name>vendor.qti.hardware.embmssl</name>
+1069c956
+<         <version>1.0</version>
+---
+>         <version>1.1</version>
+1071,1072c958,959
+<             <name>IVibratorFeature</name>
+<             <instance>default</instance>
+---
+>             <name>IEmbms</name>
+>             <instance>embmsslServer0</instance>
+1074d960
+<         <fqname>@1.0::IVibratorFeature/default</fqname>
+1075a962
+>     <!-- SlmAdapter HAL service -->
+1077c964
+<         <name>vendor.xiaomi.hardware.vsimapp</name>
+---
+>         <name>vendor.qti.hardware.slmadapter</name>
+1081,1082c968,969
+<             <name>IVSIMService</name>
+<             <instance>default</instance>
+---
+>             <name>ISlmAdapter</name>
+>             <instance>SlmAdapter</instance>
+1084d970
+<         <fqname>@1.0::IVSIMService/default</fqname>
+1086,1088d971
+<     <sepolicy>
+<         <version>29.0</version>
+<     </sepolicy>

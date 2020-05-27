@@ -16,7 +16,7 @@ $(call inherit-product, vendor/xiaomi/lmi/lmi-vendor.mk)
 # Shipping API level
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 
-#PRODUCT_TARGET_VNDK_VERSION := 29
+PRODUCT_TARGET_VNDK_VERSION := 29
 #PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 #PRODUCT_BUILD_SUPER_PARTITION := false
@@ -40,11 +40,6 @@ PRODUCT_COPY_FILES += \
 # Exclude sensor from InputManager
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/excluded-input-devices.xml:system/etc/excluded-input-devices.xml \
-
-# HIDL
-DDEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/vendor.qti.hardware.display.composer-service.xml
-DEVICE_FRAMEWORK_MANIFEST_FILE += $(DEVICE_PATH)/framework_manifest.xml
 
 # IRSC
 PRODUCT_COPY_FILES += \
@@ -182,6 +177,8 @@ PRODUCT_PACKAGES += \
     init.qcom.rc \
     init.qcom.usb.rc \
     init.target.rc \
+    init.mi_thermald.rc \
+    init.qcom.post_boot.sh \
 	fstab.qcom \
     ueventd.qcom.rc \
     init.recovery.qcom.rc \
@@ -192,6 +189,9 @@ PRODUCT_PACKAGES += \
 # fstab
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/hw/fstab.qcom
 
 # Seccomp
 PRODUCT_COPY_FILES += \
@@ -227,7 +227,9 @@ PRODUCT_COPY_FILES += \
 
 # ANT+
 PRODUCT_PACKAGES += \
-    AntHalService
+    AntHalService \
+    com.dsi.ant.antradio_library \
+    libantradio
 
 # Bluetooth
 PRODUCT_PACKAGES += \
@@ -283,9 +285,7 @@ PRODUCT_PACKAGES += \
 
 # QMI
 PRODUCT_PACKAGES += \
-    libjson \
-    libqti_vndfwk_detect \
-    libqti_vndfwk_detect.vendor
+    libjson
 
 # RIL
 PRODUCT_PACKAGES += \
@@ -430,9 +430,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service.rc
 
-PRODUCT_PACKAGES_DEBUG += \
-    bootctl
-
 # Update engine
 PRODUCT_PACKAGES += \
     update_engine \
@@ -444,7 +441,7 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # Cryptfshw
 PRODUCT_PACKAGES += \
-    vendor.qti.hardware.cryptfshw@1.0.vendor
+    vendor.qti.hardware.cryptfshw@1.0
 
 # Vendor libstdc++
 PRODUCT_PACKAGES += \
@@ -493,13 +490,15 @@ PRODUCT_PACKAGES += \
 # Vibrator
 PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service
+    android.hardware.vibrator@1.0-service \
+    vendor.qti.hardware.vibrator@1.2-service
 
 #Camera
 PRODUCT_PACKAGES += \
 	android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service \
     camera.device@3.2-impl \
+	camera.device@1.0-impl \
 	Snap
 
 # Display
@@ -529,8 +528,35 @@ PRODUCT_PACKAGES += \
     libgenlock \
     liboverlay \
     android.hardware.graphics.composer@2.3-service \
-    android.hardware.graphics.mapper@2.0-impl-qti-display \
-    vendor.qti.hardware.display.mapper@1.0.vendor
+    android.hardware.graphics.mapper@2.0-impl-qti-display 
+
+# Display interfaces
+PRODUCT_PACKAGES += \
+    vendor.display.config@1.0.vendor \
+    vendor.display.config@1.1.vendor \
+    vendor.display.config@1.2.vendor \
+    vendor.display.config@1.3.vendor \
+    vendor.display.config@1.4.vendor \
+    vendor.display.config@1.5.vendor \
+    vendor.display.config@1.6.vendor \
+    vendor.display.config@1.7.vendor \
+    vendor.display.config@1.8.vendor \
+    vendor.display.config@1.9.vendor \
+    vendor.display.config@1.10.vendor \
+    vendor.display.config@1.11.vendor \
+    vendor.qti.hardware.display.allocator@1.0.vendor \
+    vendor.qti.hardware.display.allocator@3.0.vendor \
+    vendor.qti.hardware.display.composer@1.0.vendor \
+    vendor.qti.hardware.display.composer@2.0.vendor \
+    vendor.qti.hardware.display.mapper@2.0.vendor \
+    vendor.qti.hardware.display.mapper@3.0.vendor \
+    vendor.qti.hardware.display.mapper@1.0.vendor \
+    vendor.qti.hardware.display.mapper@1.1.vendor \
+    vendor.qti.hardware.display.mapper@2.0.vendor \
+    vendor.qti.hardware.display.mapper@3.0.vendor \
+    vendor.qti.hardware.display.mapperextensions@1.0.vendor \
+    vendor.qti.hardware.display.mapperextensions@1.1.vendor
+
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
@@ -538,20 +564,20 @@ PRODUCT_PACKAGES += \
 
 # Treble
 PRODUCT_PACKAGES += \
-    vndk-sp \
+    vndk-sp
 
 # Keymaster HAL
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
 
 # Filesystem tools
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     e2fsck_static \
     resize2fs_static
 
 # Gatekeeper HAL
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
     android.hardware.gatekeeper@1.0-service
 
@@ -559,3 +585,132 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     GestureHandler
 
+#crDroid Specific
+#TARGET_HAS_FOD := true
+
+# Fingerprint
+PRODUCT_COPY_FILES += \
+    vendor/lineage/config/permissions/vendor.lineage.biometrics.fingerprint.inscreen.xml:system/etc/permissions/vendor.lineage.biometrics.fingerprint.inscreen.xml
+
+#PRODUCT_PACKAGES += \
+    lineage.biometrics.fingerprint.inscreen@1.1-service.lmi
+
+# RRO configuration
+TARGET_USES_RRO := true
+
+# system prop for Bluetooth SOC type
+PRODUCT_PROPERTY_OVERRIDES += \
+    vendor.qcom.bluetooth.soc=hastings \
+	ro.sf.lcd_density=560
+
+#QMAA global flag for modular architecture
+#true means QMAA is enabled for system
+#false means QMAA is disabled for system
+TARGET_USES_QMAA := false
+
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+
+QCOM_BOARD_PLATFORMS += kona
+TARGET_USES_QSSI := true
+
+#Indicator for each enabled QMAA HAL for this target. Each tech team locally verified their QMAA HAL and ensure code is updated/merged, then add their HAL module name to QMAA_ENABLED_HAL_MODULES as an QMAA enabling completion indicator
+QMAA_ENABLED_HAL_MODULES :=
+QMAA_ENABLED_HAL_MODULES += sensors
+
+#Default vendor image configuration
+ENABLE_VENDOR_IMAGE := true
+
+# Android EGL implementation
+PRODUCT_PACKAGES += libGLES_android
+
+# Boot control HAL test app
+#PRODUCT_PACKAGES_DEBUG += bootctl
+
+#PRODUCT_STATIC_BOOT_CONTROL_HAL := \
+		  libz \
+		  libcutils
+
+
+# QRTR related packages
+PRODUCT_PACKAGES += qrtr-ns \
+			qrtr-lookup \
+			libqrtr 
+
+# Context hub HAL
+PRODUCT_PACKAGES += \
+    android.hardware.contexthub@1.0-impl.generic \
+    android.hardware.contexthub@1.0-service
+
+# f2fs utilities
+PRODUCT_PACKAGES += \
+    sg_write_buffer \
+    f2fs_io \
+    check_f2fs
+
+# Userdata checkpoint
+PRODUCT_PACKAGES += \
+    checkpoint_gc
+
+# Enable binderized camera HAL
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
+
+#Audio DLKM
+#AUDIO_DLKM := audio_apr.ko  \
+			audio_q6_pdr.ko \
+			audio_q6_notifier.ko \
+			audio_adsp_loader.ko \
+			audio_q6.ko \
+			audio_usf.ko \
+			audio_pinctrl_wcd.ko \
+			audio_swr.ko \
+			audio_wcd_core.ko \
+			audio_swr_ctrl.ko \
+			audio_wsa881x.ko \
+			audio_platform.ko \
+			audio_hdmi.ko \
+			audio_stub.ko \
+			audio_wcd9xxx.ko \
+			audio_mbhc.ko \
+			audio_native.ko \
+			audio_wcd938x.ko \
+			audio_wcd938x_slave.ko \
+			audio_bolero_cdc.ko \
+			audio_wsa_macro.ko \
+			audio_va_macro.ko \
+			audio_rx_macro.ko \
+			audio_tx_macro.ko \
+			audio_machine_kona.ko \
+			audio_snd_event.ko 
+
+# Kernel modules install path
+#KERNEL_MODULES_INSTALL := dlkm
+#KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
+
+# FaceAuth feature
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.biometrics.face.xml \
+
+#ANT+ stack
+PRODUCT_PACKAGES += \
+    libvolumelistener
+
+# Vendor property to enable advanced network scanning
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.radio.enableadvancedscan=true
+
+#Product property overrides to configure the Dalvik heap
+PRODUCT_PROPERTY_OVERRIDES  += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapsize=512m \
+    dalvik.vm.heapgrowthlimit=256m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=512k \
+    dalvik.vm.heapmaxfree=8m \
+	ro.board.platform=kona
+
+# Framework detect
+PRODUCT_PACKAGES += \
+    libqti_vndfwk_detect \
+    libqti_vndfwk_detect.vendor \
+    libvndfwk_detect_jni.qti \
+    libvndfwk_detect_jni.qti.vendor

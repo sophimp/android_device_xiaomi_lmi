@@ -534,7 +534,6 @@ vendor/etc/init/android.hardware.drm@1.2-service.widevine.rc
 vendor/lib/libbase64.so
 vendor/lib/libcppf.so
 vendor/lib/libdrmfs.so
-vendor/lib/liboemcrypto.so
 vendor/lib/librmp.so
 vendor/lib/mediadrm/libwvdrmengine.so
 vendor/lib64/libbase64.so
@@ -557,15 +556,10 @@ vendor/lib64/libclient2slpi.notifier.so
 vendor/lib64/libdisplaydebug.so
 vendor/lib64/libdisplayqos.so
 vendor/lib64/libdpps.so
-vendor/lib64/libgpu_tonemapper.so
 vendor/lib64/libgralloccore.so
 vendor/lib64/libgrallocutils.so
-vendor/lib64/libqdutils.so
-vendor/lib64/libqservice.so
 vendor/lib64/libsdm-colormgr-algo.so
-vendor/lib64/libsdmcore.so
 vendor/lib64/libsdmextension.so
-vendor/lib64/libsdmutils.so
 
 # Display-Hardware
 vendor/lib64/libskewknob.so
@@ -840,13 +834,6 @@ vendor/lib64/libqti-iopd-client.so
 vendor/lib64/libqti-iopd.so
 vendor/lib64/vendor.qti.hardware.iop@1.0.so
 vendor/lib64/vendor.qti.hardware.iop@2.0.so
-
-# IP-CAM
-vendor/bin/ipacm
-vendor/bin/ipacm-diag
-vendor/etc/init/ipacm-diag.rc
-vendor/etc/init/ipacm.rc
-vendor/etc/IPACM_cfg.xml
 
 # IPA-Firmware
 vendor/etc/init/ipa_fws.rc
@@ -1419,3 +1406,25 @@ vendor/lib64/libhdcp2p2prov.so
 vendor/lib64/libhdcpsrm.so
 vendor/lib64/libmm-hdcpmgr.so
 vendor/lib64/libwfdhdcpcp.so
+
+# ESE-Powermanager
+vendor/bin/hw/vendor.qti.esepowermanager@1.0-service
+vendor/etc/init/vendor.qti.esepowermanager@1.0-service.rc
+vendor/lib/hw/vendor.qti.esepowermanager@1.0-impl.so
+vendor/lib/vendor.qti.esepowermanager@1.0.so
+vendor/lib64/hw/vendor.qti.esepowermanager@1.0-impl.so
+vendor/lib64/vendor.qti.esepowermanager@1.0.so
+
+# Alarm
+product/framework/vendor.qti.hardware.alarm-V1.0-java.jar
+vendor/bin/hw/vendor.qti.hardware.alarm@1.0-service
+vendor/bin/power_off_alarm
+vendor/etc/init/vendor.qti.hardware.alarm@1.0-service.rc
+vendor/lib/hw/vendor.qti.hardware.alarm@1.0-impl.so
+vendor/lib/vendor.qti.hardware.alarm@1.0.so
+vendor/lib64/hw/vendor.qti.hardware.alarm@1.0-impl.so
+vendor/lib64/vendor.qti.hardware.alarm@1.0.so
+
+vendor/bin/KmInstallKeybox
+vendor/bin/mdm_helper
+vendor/bin/mdm_helper_proxy

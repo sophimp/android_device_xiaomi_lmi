@@ -1,8 +1,0 @@
-ro.product.system.manufacturer u:object_r:exported2_default_prop:s0 exact string
-
-persist.camera.    u:object_r:vendor_camera_prop:s0
-
-persist.cache_status_64    u:object_r:cache_status_prop:s0
-persist.cache_status_32    u:object_r:cache_status_prop:s0
-persist.cache_integrity_64    u:object_r:cache_status_prop:s0
-persist.cache_integrity_32    u:object_r:cache_status_prop:s0

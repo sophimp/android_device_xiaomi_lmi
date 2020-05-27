@@ -1,2 +1,0 @@
-type diag_device, dev_type, mlstrustedobject;
-typeattribute system_block_device super_block_device_type;
