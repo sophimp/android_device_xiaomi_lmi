@@ -19,8 +19,16 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 PRODUCT_TARGET_VNDK_VERSION := 29
 #PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-#PRODUCT_BUILD_SUPER_PARTITION := false
-#PRODUCT_BUILD_PRODUCT_IMAGE := true
+PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_BUILD_PRODUCT_IMAGE := true
+PRODUCT_BUILD_RAMDISK_IMAGE := true
+PRODUCT_BUILD_SYSTEM_IMAGE := true
+PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
+PRODUCT_BUILD_VENDOR_IMAGE := true
+PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
+PRODUCT_BUILD_ODM_IMAGE := true
+PRODUCT_BUILD_CACHE_IMAGE := false
+PRODUCT_BUILD_USERDATA_IMAGE := false
 
 # Properties
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
@@ -568,8 +576,8 @@ PRODUCT_PACKAGES += \
 
 # Keymaster HAL
 #PRODUCT_PACKAGES += \
-    android.hardware.keymaster@3.0-impl \
-    android.hardware.keymaster@3.0-service
+    android.hardware.keymaster@4.0-impl \
+    android.hardware.keymaster@4.0-service
 
 # Filesystem tools
 #PRODUCT_PACKAGES += \
@@ -683,8 +691,8 @@ PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 			audio_snd_event.ko 
 
 # Kernel modules install path
-#KERNEL_MODULES_INSTALL := dlkm
-#KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
+KERNEL_MODULES_INSTALL := dlkm
+KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
 
 # FaceAuth feature
 PRODUCT_COPY_FILES += \
@@ -710,7 +718,222 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 
 # Framework detect
 PRODUCT_PACKAGES += \
+	liboemaids_system	\
+	liboemaids_vendor \
+	libus \
     libqti_vndfwk_detect \
     libqti_vndfwk_detect.vendor \
     libvndfwk_detect_jni.qti \
     libvndfwk_detect_jni.qti.vendor
+
+# ATRACE_HAL
+PRODUCT_PACKAGES += \
+    android.hardware.atrace@1.0-service
+
+#skip boot jars check
+SKIP_BOOT_JARS_CHECK := true
+
+#List of targets that use video hw
+MSM_VIDC_TARGET_LIST := msm8974 msm8610 msm8226 apq8084 msm8916 msm8994 msm8909 msm8992 msm8996 msm8952 msm8937 msm8953 msm8998 apq8098_latv sdm660 sdm845 sdm710 qcs605 msmnile $(MSMSTEPPE) $(TRINKET) kona atoll lito
+
+#List of targets that use master side content protection
+MASTER_SIDE_CP_TARGET_LIST := msm8996 msm8998 sdm660 sdm845 apq8098_latv sdm710 qcs605 msmnile $(MSMSTEPPE) $(TRINKET) kona lito atoll bengal
+
+#AUDIO_HARDWARE := audio.primary.kona
+#AUDIO_POLICY := audio_policy.kona
+#HAL Wrapper
+#AUDIO_WRAPPER := libqahw
+#AUDIO_WRAPPER += libqahwwrapper
+
+#INIT
+INIT := init.qcom.composition_type.sh
+INIT += init.target.8x25.sh
+INIT += init.qcom.mdm_links.sh
+INIT += init.qcom.modem_links.sh
+INIT += init.qcom.sensor.sh
+INIT += init.qti.ims.sh
+INIT += init.qcom.coex.sh
+INIT += init.qcom.early_boot.sh
+INIT += init.qcom.post_boot.sh
+INIT += init.qcom.syspart_fixup.sh
+INIT += init.qcom.sdio.sh
+INIT += init.qcom.sh
+INIT += init.qcom.class_core.sh
+INIT += init.class_main.sh
+INIT += init.qcom.wifi.sh
+INIT += vold.fstab
+INIT += init.qcom.usb.rc
+INIT += init.msm.usb.configfs.rc
+INIT += init.qcom.usb.sh
+INIT += usf_post_boot.sh
+INIT += init.qcom.efs.sync.sh
+INIT += ueventd.qcom.rc
+INIT += qca6234-service.sh
+INIT += ssr_setup
+INIT += enable_swap.sh
+INIT += init.mdm.sh
+INIT += fstab.qti
+INIT += init.qcom.sensors.sh
+INIT += init.qcom.crashdata.sh
+INIT += init.qcom.vendor.rc
+INIT += init.target.vendor.rc
+
+PRODUCT_PACKAGES += $(INIT)
+
+# Don't use dynamic DRM HAL for non-go SPs
+ifneq ($(TARGET_HAS_LOW_RAM),true)
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service.widevine
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service.clearkey
+else
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service-lazy.widevine
+PRODUCT_PACKAGES += android.hardware.drm@1.2-service-lazy.clearkey
+endif
+
+ifeq ($(strip $(OTA_FLAG_FOR_DRM)),true)
+PRODUCT_PACKAGES += move_widevine_data.sh
+endif
+PRODUCT_PACKAGES += move_wifi_data.sh
+PRODUCT_PACKAGES += librs_jni
+PRODUCT_PACKAGES += libion
+
+# Filesystem management tools
+PRODUCT_PACKAGES += \
+    make_ext4fs \
+    setup_fs
+
+PRODUCT_COPY_FILES := \
+    frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml \
+    frameworks/native/data/etc/android.software.verified_boot.xml:system/etc/permissions/android.software.verified_boot.xml
+
+ifneq ($(strip $(TARGET_USES_RRO)),true)
+# enable overlays to use our version of
+# source/resources etc.
+DEVICE_PACKAGE_OVERLAYS += device/qcom/common/device/overlay
+PRODUCT_PACKAGE_OVERLAYS += device/qcom/common/product/overlay
+endif
+
+# include additional build utilities
+-include device/qcom/common/utils.mk
+
+ifeq ($(TARGET_BUILD_VARIANT),user)
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES+= \
+    ro.adb.secure=1
+endif
+
+# OEM Unlock reporting
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.oem_unlock_supported=1
+
+ifeq ($(TARGET_HAS_LOW_RAM),true)
+    PRODUCT_PROPERTY_OVERRIDES += \
+        persist.vendor.qcomsysd.enabled=0
+else
+    PRODUCT_PROPERTY_OVERRIDES += \
+        persist.vendor.qcomsysd.enabled=1
+endif
+
+PRODUCT_PACKAGES_DEBUG += \
+	init.qti.debug-kona.sh 
+    
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.backup.ntpServer=0.pool.ntp.org \
+    sys.vendor.shutdown.waittime=500
+
+PRODUCT_PRIVATE_KEY := device/qcom/common/qcom.key
+
+# Display/Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.configstore@1.0-service \
+    android.hardware.broadcastradio@1.0-impl
+
+#Enable full treble flag
+PRODUCT_FULL_TREBLE_OVERRIDE := true
+PRODUCT_VENDOR_MOVE_ENABLED := true
+
+#----------------------------------------------------------------------
+# wlan specific
+#----------------------------------------------------------------------
+#include device/qcom/wlan/msmnile/wlan.mk
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.crypto.volume.filenames_mode = "aes-256-cts" \
+	ro.crypto.allow_encrypt_override = true
+
+AUDIO_FEATURE_ENABLED_DLKM := true
+
+PRODUCT_PACKAGES += blank_screen \
+		  bootanimation \
+		  libgui \
+		  libpixelflinger \
+		  libsurfaceflinger \
+		  libsurfaceflinger_ddmconnection \
+		  libui \
+		  surfaceflinger \
+		  appwidget \
+		  BackupRestoreConfirmation \
+		  android.test.base \
+		  android.test.mock \
+		  android.test.runner \
+		  audioserver \
+		  app_process \
+		  cameraserver \
+		  com.android.location.provider \
+		  ContactsProvider \
+		  DefaultContainerService \
+		  DownloadProvider \
+		  ExtServices \
+		  ExtShared \
+		  ims-common \
+		  libaaudio \
+		  libamidi \
+		  libandroid \
+		  libandroidfw \
+		  libandroid_runtime \
+		  libandroid_servers \
+		  libaudioeffect_jni \
+		  libaudioflinger \
+		  libaudiopolicymanager \
+		  libaudiopolicyservice \
+		  libaudioutils \
+		  libcamera2ndk \
+		  libcamera_client \
+		  libcameraservice \
+		  libdrmframework \
+		  libdrmframework_jni \
+		  libEGL \
+		  libETC1 \
+		  libFFTEm \
+		  libGLESv1_CM \
+		  libGLESv2 \
+		  libGLESv3 \
+		  libmedia \
+		  libmedia_jni \
+		  libmediandk \
+		  libmediaplayerservice \
+		  libsoundpool \
+		  libsoundtrigger \
+		  libsoundtriggerservice \
+		  libstagefright \
+		  libstagefright_amrnb_common \
+		  libstagefright_enc_common \
+		  libstagefright_foundation \
+		  libstagefright_omx \
+		  libwifi-service \
+		  media \
+		  media_cmd \
+		  mediadrmserver \
+		  mediaextractor \
+		  mediametrics \
+		  MediaProvider \
+		  mediaserver \
+		  PackageInstaller \
+		  PermissionController \
+		  SettingsProvider \
+		  telecom \
+		  telephony-common \
+		  voip-common \
+		  WallpaperBackup \
+		  wificond \
+		  wifi-service \
+		  wm
+

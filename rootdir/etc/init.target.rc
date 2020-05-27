@@ -44,9 +44,6 @@ on init
     symlink /dev/block/platform/soc/1d84000.ufshc /dev/block/bootdevice
     start logd
 
-on early-fs
-    start vold
-
 on fs
     start hwservicemanager
     mkdir /mnt/vendor/spunvm 0660 system system

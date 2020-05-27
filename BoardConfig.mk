@@ -104,15 +104,16 @@ BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT := 16384
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_METADATAIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_ODM := odm
 BUILD_WITHOUT_VENDOR := true
-
+BOARD_EXT4_SHARE_DUP_BLOCKS := true
 
 BOARD_AVB_VBMETA_SYSTEM := system product
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
@@ -134,8 +135,8 @@ TARGET_USES_MKE2FS := true
 #BOARD_AB_UPDATE := false
 
 # Sepolicy
--include device/qcom/sepolicy/sepolicy.mk
--include device/lineage/qcom/sepolicy/sepolicy.mk
+#-include device/qcom/sepolicy/sepolicy.mk
+#-include device/lineage/qcom/sepolicy/sepolicy.mk
 #BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
     device/qcom/sepolicy/generic/private \
     device/qcom/sepolicy/qva/private
@@ -154,6 +155,7 @@ PRODUCT_PRIVATE_SEPOLICY_DIRS += \
 
 # HIDL
 DDEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 #DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/vendor.qti.hardware.display.composer-service.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE += $(DEVICE_PATH)/framework_manifest.xml
 
@@ -253,7 +255,7 @@ TARGET_USES_PRE_UPLINK_FEATURES_NETMGRD := true
 BOARD_USES_PRODUCTIMAGE := true
 
 # Encryption
-#TARGET_HW_DISK_ENCRYPTION := true
+TARGET_HW_DISK_ENCRYPTION := true
 
 # FM
 BOARD_HAVE_QCOM_FM := true
@@ -262,10 +264,10 @@ TARGET_QCOM_NO_FM_FIRMWARE := true
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 
 # Init
-ARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_lmi
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_lmi
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
-#TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_msm
-TARGET_RECOVERY_DEVICE_MODULES := libinit_lmi
+#TARGET_INIT_VENDOR_LIB := //device/qcom/common:libinit_msm
+TARGET_RECOVERY_DEVICE_MODULES := libinit_msm
 
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /mnt/vendor/persist:/persist \
@@ -375,5 +377,24 @@ TARGET_HOST_CC_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)gcc
 TARGET_HOST_CXX_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)g++
 TARGET_HOST_AR_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)ar
 TARGET_HOST_LD_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)ld
+
+TARGET_USE_VENDOR_CAMERA_EXT := true
+ENABLE_VENDOR_IMAGE := true
+
+# dm-verity definitions
+ifneq ($(BOARD_AVB_ENABLE), true)
+   PRODUCT_SYSTEM_VERITY_PARTITION=/dev/block/bootdevice/by-name/system
+   ifeq ($(ENABLE_VENDOR_IMAGE), true)
+      PRODUCT_VENDOR_VERITY_PARTITION=/dev/block/bootdevice/by-name/vendor
+   endif
+   $(call inherit-product, build/target/product/verity.mk)
+endif
+
+#BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/seccomp
+
+TARGET_MOUNT_POINTS_SYMLINKS := false
+
+VENDOR_QTI_PLATFORM := kona
+VENDOR_QTI_DEVICE := qssi
 
 -include vendor/xiaomi/lmi/BoardConfigVendor.mk
