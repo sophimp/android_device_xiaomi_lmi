@@ -1,37 +1,9 @@
-# Copyright (c) 2018, 2020 The Linux Foundation. All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted (subject to the limitations in the
-# disclaimer below) provided that the following conditions are met:
-#
-#    * Redistributions of source code must retain the above copyright
-#      notice, this list of conditions and the following disclaimer.
-#
-#    * Redistributions in binary form must reproduce the above
-#      copyright notice, this list of conditions and the following
-#      disclaimer in the documentation and/or other materials provided
-#      with the distribution.
-#
-#    * Neither the name of The Linux Foundation nor the names of its
-#      contributors may be used to endorse or promote products derived
-#      from this software without specific prior written permission.
-#
-# NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE
-# GRANTED BY THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
-# HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-# IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-# GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-# IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-# IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #
-# system.prop for Kona
+# from device/qcom/qssi/system.prop
+#
+#
+# system.prop for qssi
 #
 
 rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so
@@ -69,13 +41,13 @@ media.stagefright.enable-qcp=true
 media.stagefright.enable-fma2dp=true
 media.stagefright.enable-scan=true
 media.stagefright.thumbnail.prefer_hw_codecs=true
+media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 mmp.enable.3g2=true
 media.aac_51_output_enabled=true
 mm.enable.smoothstreaming=true
-media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 #13631487 is decimal sum of supported codecs in AAL
-#codecs:(PARSER_)AAC AC3 AMR_NB AMR_WB ASF AVI DTS FLV 3GP 3G2 MKV MP2PS MP2TS MP3 OGG QCP WAV FLAC AIFF APE DSD MOV XVID
-vendor.mm.enable.qcom_parser=63963135
+#codecs:(PARSER_)AAC AC3 AMR_NB AMR_WB ASF AVI DTS FLV 3GP 3G2 MKV MP2PS MP2TS MP3 OGG QCP WAV FLAC AIFF APE DSD MOV XVID MHAS
+vendor.mm.enable.qcom_parser=131071999
 persist.mm.enable.prefetch=true
 
 #Netflix custom property
@@ -85,7 +57,6 @@ ro.netflix.bsp_rev=Q8250-19134-1
 # system props for the data modules
 #
 ro.vendor.use_data_netmgrd=true
-persist.data.netmgrd.qos.enable=true
 persist.vendor.data.mode=concurrent
 
 #system props for time-services
@@ -99,9 +70,6 @@ persist.timed.enable=true
 # 196610 is decimal for 0x30002 to report version 3.2
 ro.opengles.version=196610
 
-# system property for maximum number of HFP client connections
-bt.max.hfpclient.connections=1
-
 #
 # System props for telephony
 # System prop to turn on CdmaLTEPhone always
@@ -111,15 +79,9 @@ telephony.lteOnCdmaDevice=1
 #
 persist.fuse_sdcard=true
 
-#system prop for Bluetooth SOC type
-vendor.bluetooth.soc=hastings
+#System props for BT
 ro.bluetooth.library_name=libbluetooth_qti.so
-persist.vendor.btstack.enable.splita2dp=true
-persist.vendor.btstack.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac
-
-#system prop for wipower support
-ro.bluetooth.emb_wp_mode=true
-ro.bluetooth.wipower=true
+persist.vendor.btstack.aac_frm_ctl.enabled=true
 
 #
 #snapdragon value add features
@@ -132,6 +94,16 @@ persist.audio.fluence.voicecall=true
 persist.audio.fluence.voicerec=false
 persist.audio.fluence.speaker=true
 
+
+#enable offload audio video playback by default
+audio.offload.video=true
+#
+##enable music through deep buffer
+audio.deep_buffer.media=true
+#
+##set AudioFlinger client heap size
+ro.af.client_heap_size_kbyte=7168
+#
 #system prop for RmNet Data
 persist.rmnet.data.enable=true
 persist.data.wda.enable=true
@@ -147,6 +119,13 @@ persist.data.df.dev_name=rmnet_usb0
 persist.debug.wfd.enable=1
 ##property to choose between virtual/external wfd display
 persist.sys.wfd.virtual=0
+
+
+#property to enable HWC for VDS
+debug.sf.enable_hwc_vds=1
+
+#property to latch unsignaled buffer
+debug.sf.latch_unsignaled=1
 
 # enable tunnel encoding for amrwb
 tunnel.audio.encode = true
@@ -193,13 +172,48 @@ persist.vendor.radio.atfwd.start=true
 ro.kernel.qemu.gles=0
 qemu.hw.mainkeys=0
 
-#Enable ULMK properties
-ro.lmk.kill_heaviest_task=true
-ro.lmk.kill_timeout_ms=15
-
-ro.boot.hwc=CN
-
 #Expose aux camera for below packages
-vendor.camera.aux.packagelist=org.codeaurora.snapcam
+vendor.camera.aux.packagelist=org.codeaurora.snapcam,com.xiaomi.runin,com.xiaomi.cameratest,com.xiaomi.factory.mmi
 
-ro.board.platform=kona
+#Whitelisting the below packages
+persist.vendor.camera.privapp.list=org.codeaurora.snapcam
+persist.camera.privapp.list=org.codeaurora.snapcam
+
+#enable IZat OptInApp overlay
+persist.vendor.overlay.izat.optin=rro
+
+# Property for backup NTP Server
+persist.backup.ntpServer="0.pool.ntp.org"
+
+#Property to enable Mag filter
+persist.vendor.sensors.enable.mag_filter=true
+
+#Partition source order for Product/Build properties pickup.
+ro.product.property_source_order=odm,vendor,product,product_services,system
+
+#Property to enable Codec2 for audio and OMX for Video
+debug.stagefright.ccodec=1
+
+#sysprop for WLAN
+ro.hardware.wlan.vendor=qcom
+ro.hardware.wlan.chip=639x
+ro.hardware.wlan.mimo=1
+
+# system props for the dpm module
+persist.vendor.dpm.feature=1
+
+#button jack mode & switch
+persist.audio.button_jack.profile=volume
+persist.audio.button_jack.switch=0
+
+#close flex mapping
+persist.radio.flexmap_type=none
+
+# xiaomi ugd
+ro.gfx.driver.0=com.xiaomi.ugd
+
+# qualcomm ugd
+ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.sm8250.api29
+# end of device/qcom/qssi/system.prop
+
+#

@@ -1,7 +1,7 @@
 
-#$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 # GSI AVB Public Keys
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     q-gsi.avbpubkey \
     r-gsi.avbpubkey \
     s-gsi.avbpubkey
@@ -150,50 +150,21 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml
 
 # Skip Mount
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
 
 # Ramdisk
 PRODUCT_PACKAGES += \
-    init.insmod.sh \
-    capture.sh \
-    capture_headset.sh \
-    init.class_main.sh \
-    init.crda.sh \
-    init.mdm.sh \
-    init.mi.usb.sh \
-    init.qcom.class_core.sh \
-    init.qcom.coex.sh \
-    init.qcom.crashdata.sh \
-    init.qcom.early_boot.sh \
-    init.qcom.efs.sync.sh \
-    init.qcom.post_boot.sh \
-    init.qcom.sdio.sh \
-    init.qcom.sensors.sh \
-    init.qcom.sh \
-    init.qcom.usb.sh \
-    init.qti.chg_policy.sh \
-    init.qti.fm.sh \
-    init.qti.ims.sh \
-    playback.sh \
-    playback_headset.sh \
-    qca6234-service.sh \
-    setup_backmic2headphone.sh \
-    setup_headsetmic2headphone.sh \
-    setup_headsetmic2receiver.sh \
-    setup_mainmic2headphone.sh \
-    setup_topmic2headphone.sh \
-    teardown_loopback.sh \
-    init.msm.usb.configfs.rc \
+	init.msm.usb.configfs.rc \
     init.qcom.factory.rc \
     init.qcom.rc \
     init.qcom.usb.rc \
     init.target.rc \
-    init.mi_thermald.rc \
     init.qcom.post_boot.sh \
 	fstab.qcom \
+    ueventd.rc \
     ueventd.qcom.rc \
-    init.recovery.qcom.rc \
+    init.recovery.qcom.rc 
 
 PRODUCT_PACKAGES += \
 	fastbootd
@@ -452,6 +423,7 @@ PRODUCT_PACKAGES += \
 
 # Boot control
 PRODUCT_PACKAGES += \
+	bootctrl.kona \
     android.hardware.boot@1.0-service.rc
 
 # Update engine
@@ -615,7 +587,7 @@ PRODUCT_PACKAGES += \
     resize2fs_static
 
 # Gatekeeper HAL
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
     android.hardware.gatekeeper@1.0-service
 
