@@ -1,11 +1,14 @@
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
-
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 # GSI AVB Public Keys
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     q-gsi.avbpubkey \
     r-gsi.avbpubkey \
     s-gsi.avbpubkey
+
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -19,16 +22,16 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 PRODUCT_TARGET_VNDK_VERSION := 29
 #PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_BUILD_SUPER_PARTITION := true
 PRODUCT_BUILD_PRODUCT_IMAGE := true
 PRODUCT_BUILD_RAMDISK_IMAGE := true
 PRODUCT_BUILD_SYSTEM_IMAGE := true
-PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
+#PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
 PRODUCT_BUILD_VENDOR_IMAGE := true
-PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
+#PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
 PRODUCT_BUILD_ODM_IMAGE := true
-PRODUCT_BUILD_CACHE_IMAGE := false
-PRODUCT_BUILD_USERDATA_IMAGE := false
+#PRODUCT_BUILD_CACHE_IMAGE := false
+#PRODUCT_BUILD_USERDATA_IMAGE := false
 
 # Properties
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
@@ -152,6 +155,7 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
+    init.insmod.sh \
     capture.sh \
     capture_headset.sh \
     init.class_main.sh \
@@ -239,11 +243,16 @@ PRODUCT_PACKAGES += \
     com.dsi.ant.antradio_library \
     libantradio
 
+PRODUCT_COPY_FILES += \
+    external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.dsi.ant.antradio_library.xml
+
 # Bluetooth
 PRODUCT_PACKAGES += \
+    audio.bluetooth.default \
     liba2dpoffload \
     libbthost_if \
-    vendor.qti.hardware.bluetooth_audio@2.0.vendor
+    vendor.qti.hardware.bluetooth_audio@2.0.vendor \
+    vendor.qti.hardware.btconfigstore@1.0.vendor
 
 # WiFi
 PRODUCT_COPY_FILES += \
@@ -258,7 +267,9 @@ PRODUCT_COPY_FILES += \
 
 # LiveDisplay
 PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service-sdm
+	vendor.lineage.livedisplay@2.0-service-legacymm \
+    vendor.lineage.livedisplay@2.0-service-sysfs \
+    vendor.lineage.livedisplay@2.0-service-sdm 
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -337,7 +348,11 @@ PRODUCT_COPY_FILES += \
 	
 # WiFi Display
 PRODUCT_PACKAGES += \
-    libnl
+    libnl \
+    libdisplayconfig.vendor \
+    libqdMetaData \
+    libqdMetaData.system \
+    libqdMetaData.vendor
 
 PRODUCT_BOOT_JARS += \
     WfdCommon
@@ -406,28 +421,29 @@ PRODUCT_COPY_FILES += \
 
 # CNE
 PRODUCT_PACKAGES += \
-    #cneapiclient \
-    #com.quicinc.cne \
-    #services-ext
+    cneapiclient \
+    com.quicinc.cne \
+    services-ext
 
 # Net
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0
 
-# OMX
+# Media OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libcodec2_hidl@1.0.vendor \
     libcodec2_vndk.vendor \
-    libOmxAacEnc \
-    libOmxAmrEnc \
     libOmxCore \
-    libOmxEvrcEnc \
-    libOmxG711Enc \
     libOmxQcelp13Enc \
-    libOmxVdec \
     libOmxVenc \
     libOmxVidcCommon \
+    libmm-omxcore \
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxEvrcEnc \
+    libOmxG711Enc \
+    libOmxVdec \
     libstagefrighthw
 
 # Remove unwanted packages
@@ -481,19 +497,37 @@ PRODUCT_PACKAGES += \
 # Thermal
 PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-impl \
-    android.hardware.thermal@1.0-service 
+    android.hardware.thermal@1.0-service  \
+    thermal.kona
  
 # Audio
 PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-service \
     android.hardware.audio@5.0-impl \
     android.hardware.audio.effect@5.0-impl \
-    android.hardware.audio.common@2.0-util \
-    android.hardware.audio.common@5.0-util \
-    android.hardware.soundtrigger@2.1-impl \
-    android.hardware.bluetooth.audio@2.0-impl \
+    android.hardware.soundtrigger@2.2-impl:32 \
     audio.a2dp.default \
-    libaacwrapper
+    audio.r_submix.default \
+    audio.primary.kona \
+    audio.usb.default \
+    liba2dpoffload \
+    libaudio-resampler \
+    libbatterylistener \
+    libcirrusspkrprot \
+    libcomprcapture \
+    libexthwplugin \
+    libhdmiedid \
+    libhdmipassthru \
+    libhfp \
+    libqcompostprocbundle \
+    libqcomvisualizer \
+    libqcomvoiceprocessing \
+    libsndmonitor \
+    libspkrprot \
+    libtinycompress \
+    libtinycompress.vendor \
+    libvolumelistener \
+    tinymix
 
 # Vibrator
 PRODUCT_PACKAGES += \
@@ -517,10 +551,6 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@2.0-impl \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
-    libdisplayconfig \
-    libdisplayconfig.vendor \
-    libqdMetaData \
-    libqdMetaData.system \
     libtinyxml \
     libvulkan \
     vendor.display.config@1.7 \
@@ -575,7 +605,7 @@ PRODUCT_PACKAGES += \
     vndk-sp
 
 # Keymaster HAL
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     android.hardware.keymaster@4.0-impl \
     android.hardware.keymaster@4.0-service
 
@@ -936,4 +966,24 @@ PRODUCT_PACKAGES += blank_screen \
 		  wificond \
 		  wifi-service \
 		  wm
+
+# Codec2 modules
+PRODUCT_PACKAGES += \
+    com.android.media.swcodec \
+    libsfplugin_ccodec
+
+# IFAA manager
+PRODUCT_PACKAGES += \
+    org.ifaa.android.manager
+
+PRODUCT_BOOT_JARS += \
+    org.ifaa.android.manager
+
+# Insmod files
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/init.insmod.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/init.insmod.cfg
+
+# Touchscreen
+PRODUCT_PACKAGES += \
+    libtinyxml2
 

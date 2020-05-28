@@ -85,7 +85,7 @@ TARGET_BOARD_PLATFORM := kona
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno650
 
 BOARD_USES_METADATA_PARTITION := true
-BOARD_ROOT_EXTRA_FOLDERS := existing_folders metadata
+BOARD_ROOT_EXTRA_FOLDERS := existing_folders firmware persist metadata
 
 # Partitions
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
@@ -100,7 +100,7 @@ BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
 BOARD_SUPER_PARTITION_SIZE := 9126805504
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system product vendor odm
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9126805504
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT := 16384
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
@@ -135,29 +135,26 @@ TARGET_USES_MKE2FS := true
 #BOARD_AB_UPDATE := false
 
 # Sepolicy
-#-include device/qcom/sepolicy/sepolicy.mk
-#-include device/lineage/qcom/sepolicy/sepolicy.mk
-#BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
-    device/qcom/sepolicy/generic/private \
-    device/qcom/sepolicy/qva/private
-
-#BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
-    device/qcom/sepolicy/generic/public \
-    device/qcom/sepolicy/qva/public
-
-#PRODUCT_PUBLIC_SEPOLICY_DIRS += \
-    device/qcom/sepolicy/product/public \
-
-PRODUCT_PRIVATE_SEPOLICY_DIRS += \
-    $(DEVICE_PATH)/sepolicy/private
-
-	#device/qcom/sepolicy/product/private \
+#TARGET_SEPOLICY_DIR := msmsteppe
+include device/lineage/sepolicy/common/sepolicy.mk
+include device/qcom/sepolicy/sepolicy.mk
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
+#BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/public
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 
 # HIDL
 DDEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 #DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/vendor.qti.hardware.display.composer-service.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE += $(DEVICE_PATH)/framework_manifest.xml
+ODM_MANIFEST_SKUS += \
+	365 \
+	366 \
+	qva
+
+ODM_MANIFEST_365_FILES := $(DEVICE_PATH)/manifest_sdmmagpie.xml
+ODM_MANIFEST_366_FILES := $(DEVICE_PATH)/manifest_sdmmagpie.xml
+ODM_MANIFEST_QVA_FILES := $(DEVICE_PATH)/manifest-qva.xml
 
 # Telephony
 TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
@@ -208,27 +205,28 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_USES_QCNE := true
 
 # Display
+MAX_EGL_CACHE_KEY_SIZE := 12*1024
+MAX_EGL_CACHE_SIZE := 2048*1024
 MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+#TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_USES_DISPLAY_RENDER_INTENTS := true
+TARGET_USES_NEW_ION_API :=true
 TARGET_USES_DRM_PP := true
 TARGET_USES_GRALLOC1 := true
 TARGET_USES_HWC2 := true
 TARGET_USES_ION := true
-TARGET_USES_NEW_ION_API :=true
-
-MAX_EGL_CACHE_KEY_SIZE := 12*1024
-MAX_EGL_CACHE_SIZE := 2048*1024
+TARGET_USES_QTI_MAPPER_2_0 := true
+TARGET_USES_QTI_MAPPER_EXTENSIONS_1_1 := true
 
 # DRM
 TARGET_ENABLE_MEDIADRM_64 := true
 
 # GPS
-#BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := true
-#GNSS_HIDL_VERSION := 1.1
-TARGET_NO_RPC := true
-#USE_DEVICE_SPECIFIC_GPS := true
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
+GNSS_HIDL_VERSION := 2.0
+LOC_HIDL_VERSION := 3.0
+USE_DEVICE_SPECIFIC_GPS := true
 
 # NFC
 TARGET_USES_NQ_NFC := true
@@ -396,5 +394,15 @@ TARGET_MOUNT_POINTS_SYMLINKS := false
 
 VENDOR_QTI_PLATFORM := kona
 VENDOR_QTI_DEVICE := qssi
+
+# DPM
+BOARD_USES_DPM := true
+
+# Media
+TARGET_DISABLED_UBWC := true
+TARGET_USES_MEDIA_EXTENSIONS := true
+
+# RenderScript
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 
 -include vendor/xiaomi/lmi/BoardConfigVendor.mk
