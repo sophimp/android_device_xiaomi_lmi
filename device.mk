@@ -162,6 +162,7 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     init.qcom.post_boot.sh \
 	fstab.qcom \
+	verity_key \
     ueventd.rc \
     ueventd.qcom.rc \
     init.recovery.qcom.rc 
@@ -169,9 +170,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fastbootd
 
-# fstab
+# fstab, read-only file dirctory
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+	build/make/target/product/security/verity_key:$(TARGET_OUT_RAMDISK)/verity_key \
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_OUT_RAMDISK)/fstab.qcom
+
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/hw/fstab.qcom

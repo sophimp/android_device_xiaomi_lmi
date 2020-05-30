@@ -215,5 +215,9 @@ ro.gfx.driver.0=com.xiaomi.ugd
 # qualcomm ugd
 ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.sm8250.api29
 # end of device/qcom/qssi/system.prop
+#
+persist.service.adb.enable=1
+persist.service.debuggable=1
+persist.sys.usb.config=mtp,adb
 
 #

@@ -38,6 +38,8 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth/include
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := kona
 TARGET_NO_BOOTLOADER := true
+VENDOR_QTI_PLATFORM := kona
+VENDOR_QTI_DEVICE := qssi
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
@@ -45,13 +47,13 @@ TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 # Kernel
 BOARD_KERNEL_BASE := 0x0000
 # get from unpack authentication boot.img
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm buildvariant=user
-BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=1.0
-BOARD_KERNEL_CMDLINE += androidboot.keymaster=1
-BOARD_KERNEL_CMDLINE += androidboot.vbmeta.device=PARTUUID=cb4b5e18-99ee-c90e-5d13-618a64accec8
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm 
+#BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
+#BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
+#BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=1.0
+#BOARD_KERNEL_CMDLINE += androidboot.keymaster=1
+#BOARD_KERNEL_CMDLINE += androidboot.vbmeta.device=PARTUUID=cb4b5e18-99ee-c90e-5d13-618a64accec8
+#BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 #BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 BOARD_KERNEL_PAGESIZE := 4096
@@ -61,11 +63,15 @@ BOARD_KERNEL_SECOND_OFFSET := 0x00f00000
 BOARD_KERNEL_OFFSET := 0x00008000
 TARGET_KERNEL_ARCH := arm64
 
-#TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+#TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel-stock
+#BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo-cus.img
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo-stock.img
+# used to build dtbo.img target of makefile rules 
+#BOARD_PREBUILT_DTBOIMAGE := out/target/product/lmi/dtbo/arch/arm64/boot/dtbo.img
+#BOARD_PREBUILT_DTIMAGE_DIR := 
 
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm8250
-TARGET_KERNEL_CONFIG := lmi_user_defconfig
+TARGET_KERNEL_CONFIG := vendor/lmi_user_defconfig
 
 TARGET_KERNEL_CLANG_COMPILE := true
 BOARD_BOOTIMG_HEADER_VERSION := 2
@@ -75,10 +81,16 @@ BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --second_offset $(BOARD_KERNEL_SECOND_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --dtb $(DEVICE_PATH)/prebuilt/Qualcomm_kona_integrate.dtb
+#BOARD_MKBOOTIMG_ARGS += --dtb out/target/product/lmi/obj/PACKAGING/target_files_intermediates/lineage_lmi-target_files-eng.hrst/BOOT/dtb
+BOARD_MKBOOTIMG_ARGS += --dtb $(DEVICE_PATH)/prebuilt/dtb-stock
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE) --board ""
 
-BOARD_KERNEL_SEPARATED_DTBO := false # TODO: set to true when we build our own kernel
+#BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+#BOARD_KERNEL_SEPARATED_DTBO := false # TODO: set to true when we build our own kernel
+#BOARD_KERNEL_SEPARATED_DT := true # TODO: set to true when we build our own kernel
+
+# kernel dtbo compile rule, can not both set with BOARD_KERNEL_SEPARATED_DTBO
+#TARGET_NEEDS_DTBOIMAGE := true
 
 BOARD_USES_QCOM_HARDWARE := true
 QCOM_BOARD_PLATFORMS += kona
@@ -105,6 +117,7 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT := 16384
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_DTBOIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -121,11 +134,11 @@ BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := 2
 
-BOARD_AVB_VBMETA_VENDOR := vendor odm
-BOARD_AVB_VBMETA_VENDOR_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
-BOARD_AVB_VBMETA_VENDOR_ALGORITHM := SHA256_RSA4096
-BOARD_AVB_VBMETA_VENDOR_ROLLBACK_INDEX_LOCATION := 2
-BOARD_AVB_VBMETA_VENDOR_ROLLBACK_INDEX := 2
+#BOARD_AVB_VBMETA_VENDOR := vendor odm
+#BOARD_AVB_VBMETA_VENDOR_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+##BOARD_AVB_VBMETA_VENDOR_ALGORITHM := SHA256_RSA4096
+#BOARD_AVB_VBMETA_VENDOR_ROLLBACK_INDEX_LOCATION := 2
+#BOARD_AVB_VBMETA_VENDOR_ROLLBACK_INDEX := 2
 
 #BOARD_AVB_VBMETA_PRODUCT := product
 #BOARD_AVB_VBMETA_PRODUCT_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
@@ -309,48 +322,7 @@ TARGET_WLAN_POWER_STAT := "/sys/kernel/wlan/power_stats"
 
 USE_OPENGL_RENDERER := true
 
-#BOARD_VENDOR_KERNEL_MODULES := \
-    $(KERNEL_MODULES_OUT)/audio_apr.ko \
-    $(KERNEL_MODULES_OUT)/audio_q6_pdr.ko \
-    $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
-    $(KERNEL_MODULES_OUT)/audio_adsp_loader.ko \
-    $(KERNEL_MODULES_OUT)/audio_q6.ko \
-    $(KERNEL_MODULES_OUT)/audio_usf.ko \
-    $(KERNEL_MODULES_OUT)/audio_pinctrl_wcd.ko \
-    $(KERNEL_MODULES_OUT)/audio_pinctrl_lpi.ko \
-    $(KERNEL_MODULES_OUT)/audio_swr.ko \
-    $(KERNEL_MODULES_OUT)/audio_wcd_core.ko \
-    $(KERNEL_MODULES_OUT)/audio_swr_ctrl.ko \
-    $(KERNEL_MODULES_OUT)/audio_wsa881x.ko \
-    $(KERNEL_MODULES_OUT)/audio_platform.ko \
-    $(KERNEL_MODULES_OUT)/audio_hdmi.ko \
-    $(KERNEL_MODULES_OUT)/audio_stub.ko \
-    $(KERNEL_MODULES_OUT)/audio_wcd9xxx.ko \
-    $(KERNEL_MODULES_OUT)/audio_mbhc.ko \
-    $(KERNEL_MODULES_OUT)/audio_wcd938x.ko \
-    $(KERNEL_MODULES_OUT)/audio_wcd938x_slave.ko \
-    $(KERNEL_MODULES_OUT)/audio_bolero_cdc.ko \
-    $(KERNEL_MODULES_OUT)/audio_wsa_macro.ko \
-    $(KERNEL_MODULES_OUT)/audio_va_macro.ko \
-    $(KERNEL_MODULES_OUT)/audio_rx_macro.ko \
-    $(KERNEL_MODULES_OUT)/audio_tx_macro.ko \
-    $(KERNEL_MODULES_OUT)/audio_native.ko \
-    $(KERNEL_MODULES_OUT)/audio_machine_kona.ko \
-    $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
-    $(KERNEL_MODULES_OUT)/qca_cld3_wlan.ko \
-    $(KERNEL_MODULES_OUT)/wil6210.ko \
-    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
-    $(KERNEL_MODULES_OUT)/br_netfilter.ko \
-    $(KERNEL_MODULES_OUT)/gspca_main.ko \
-    $(KERNEL_MODULES_OUT)/lcd.ko \
-    $(KERNEL_MODULES_OUT)/llcc_perfmon.ko \
-    $(KERNEL_MODULES_OUT)/mpq-adapter.ko \
-    $(KERNEL_MODULES_OUT)/mpq-dmx-hw-plugin.ko \
-    $(KERNEL_MODULES_OUT)/wigig_sensing.ko
-
 TARGET_KERNEL_HEADER_ARCH := arm64
-#TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-#TARGET_USES_UNCOMPRESSED_KERNEL := false
 
 BOARD_USES_GENERIC_AUDIO := true
 #BOARD_QTI_CAMERA_32BIT_ONLY := true
@@ -359,24 +331,11 @@ BOARD_USES_GENERIC_AUDIO := true
 TARGET_KERNEL_APPEND_DTB := false
 TARGET_COMPILE_WITH_MSM_KERNEL := true
 
-#BOARD_INCLUDE_DTB_IN_BOOTIMG := false
-
 #Enable PD locater/notifier
 TARGET_PD_SERVICE_ENABLED := true
 
 #Enable peripheral manager
 TARGET_PER_MGR_ENABLED := true
-
-ifeq ($(HOST_OS),linux)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-      WITH_DEXPREOPT_PIC := true
-      ifneq ($(TARGET_BUILD_VARIANT),user)
-        # Retain classes.dex in APK's for non-user builds
-        DEX_PREOPT_DEFAULT := nostripping
-      endif
-    endif
-endif
 
 #Add non-hlos files to ota packages
 ADD_RADIO_FILES := true
@@ -387,41 +346,12 @@ USE_SENSOR_MULTI_HAL := true
 # Enable sensor Version V_2
 USE_SENSOR_HAL_VER := 2.0
 
-#flag for qspm compilation
-#TARGET_USES_QSPM := true
-
-#-----------------------------------------------------------------
-# wlan specific
-#-----------------------------------------------------------------
-#ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-#include device/qcom/wlan/kona/BoardConfigWlan.mk
-#endif
-
-SOURCE_ROOT := $(shell pwd)
-TARGET_HOST_COMPILER_PREFIX_OVERRIDE := prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8/bin/x86_64-linux-
-TARGET_HOST_CC_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)gcc
-TARGET_HOST_CXX_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)g++
-TARGET_HOST_AR_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)ar
-TARGET_HOST_LD_OVERRIDE := $(TARGET_HOST_COMPILER_PREFIX_OVERRIDE)ld
-
 TARGET_USE_VENDOR_CAMERA_EXT := true
 ENABLE_VENDOR_IMAGE := true
-
-# dm-verity definitions
-ifneq ($(BOARD_AVB_ENABLE), true)
-   PRODUCT_SYSTEM_VERITY_PARTITION=/dev/block/bootdevice/by-name/system
-   ifeq ($(ENABLE_VENDOR_IMAGE), true)
-      PRODUCT_VENDOR_VERITY_PARTITION=/dev/block/bootdevice/by-name/vendor
-   endif
-   $(call inherit-product, build/target/product/verity.mk)
-endif
 
 #BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/seccomp
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
-
-VENDOR_QTI_PLATFORM := kona
-VENDOR_QTI_DEVICE := qssi
 
 # DPM
 BOARD_USES_DPM := true
