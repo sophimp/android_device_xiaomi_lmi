@@ -1036,3 +1036,5 @@ vendor/lib64/libsdm-diag.so
 -vendor/lib64/libsdm-disp-vndapis.so
 vendor/lib64/libtinyxml2_1.so
 
+vendor/lib/libsynergy_loc_api.so
+vendor/lib64/libsynergy_loc_api.so

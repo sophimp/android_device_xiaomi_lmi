@@ -20,21 +20,21 @@ $(call inherit-product, vendor/xiaomi/lmi/lmi-vendor.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 
 PRODUCT_TARGET_VNDK_VERSION := 29
-#PRODUCT_SHIPPING_API_LEVEL := 29
+PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_BUILD_SUPER_PARTITION := true
-PRODUCT_BUILD_PRODUCT_IMAGE := true
-PRODUCT_BUILD_RAMDISK_IMAGE := true
-PRODUCT_BUILD_SYSTEM_IMAGE := true
+PRODUCT_BUILD_SUPER_PARTITION := false
+#PRODUCT_BUILD_PRODUCT_IMAGE := true
+#PRODUCT_BUILD_RAMDISK_IMAGE := true
+#PRODUCT_BUILD_SYSTEM_IMAGE := true
 #PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
-PRODUCT_BUILD_VENDOR_IMAGE := true
+#PRODUCT_BUILD_VENDOR_IMAGE := true
 #PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
-PRODUCT_BUILD_ODM_IMAGE := true
+#PRODUCT_BUILD_ODM_IMAGE := true
 #PRODUCT_BUILD_CACHE_IMAGE := false
 #PRODUCT_BUILD_USERDATA_IMAGE := false
 
 # Properties
-PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+#PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 # A/B
 AB_OTA_UPDATER := false
@@ -153,31 +153,52 @@ PRODUCT_COPY_FILES += \
 #PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
 
-# Ramdisk
 PRODUCT_PACKAGES += \
-	init.msm.usb.configfs.rc \
+	capture.sh \
+    capture_headset.sh \
+    init.class_main.sh \
+    init.crda.sh \
+    init.mdm.sh \
+    init.mi.usb.sh \
+    init.qcom.class_core.sh \
+    init.qcom.coex.sh \
+    init.qcom.crashdata.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.efs.sync.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.sdio.sh \
+    init.qcom.sensors.sh \
+    init.qcom.sh \
+    init.qcom.usb.sh \
+    init.qti.chg_policy.sh \
+    init.qti.fm.sh \
+    init.qti.ims.sh \
+    playback.sh \
+    playback_headset.sh \
+    qca6234-service.sh \
+    setup_backmic2headphone.sh \
+    setup_headsetmic2headphone.sh \
+    setup_headsetmic2receiver.sh \
+    setup_mainmic2headphone.sh \
+    setup_topmic2headphone.sh \
+    teardown_loopback.sh \
+    init.msm.usb.configfs.rc \
     init.qcom.factory.rc \
     init.qcom.rc \
     init.qcom.usb.rc \
     init.target.rc \
-    init.qcom.post_boot.sh \
-	fstab.qcom \
-	verity_key \
-    ueventd.rc \
+    fstab.qcom \
     ueventd.qcom.rc \
-    init.recovery.qcom.rc 
 
 PRODUCT_PACKAGES += \
 	fastbootd
 
-# fstab, read-only file dirctory
+# Ramdisk
 PRODUCT_COPY_FILES += \
-	build/make/target/product/security/verity_key:$(TARGET_OUT_RAMDISK)/verity_key \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_OUT_RAMDISK)/fstab.qcom
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom \
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/hw/fstab.qcom \
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom
 
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/hw/fstab.qcom
 
 # Seccomp
 PRODUCT_COPY_FILES += \
@@ -667,37 +688,10 @@ PRODUCT_PACKAGES += \
 # Enable binderized camera HAL
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 
-#Audio DLKM
-#AUDIO_DLKM := audio_apr.ko  \
-			audio_q6_pdr.ko \
-			audio_q6_notifier.ko \
-			audio_adsp_loader.ko \
-			audio_q6.ko \
-			audio_usf.ko \
-			audio_pinctrl_wcd.ko \
-			audio_swr.ko \
-			audio_wcd_core.ko \
-			audio_swr_ctrl.ko \
-			audio_wsa881x.ko \
-			audio_platform.ko \
-			audio_hdmi.ko \
-			audio_stub.ko \
-			audio_wcd9xxx.ko \
-			audio_mbhc.ko \
-			audio_native.ko \
-			audio_wcd938x.ko \
-			audio_wcd938x_slave.ko \
-			audio_bolero_cdc.ko \
-			audio_wsa_macro.ko \
-			audio_va_macro.ko \
-			audio_rx_macro.ko \
-			audio_tx_macro.ko \
-			audio_machine_kona.ko \
-			audio_snd_event.ko 
-
 # Kernel modules install path
-KERNEL_MODULES_INSTALL := dlkm
-KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
+#KERNEL_MODULES_INSTALL := dlkm
+#KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
+#AUDIO_FEATURE_ENABLED_DLKM := true
 
 # FaceAuth feature
 PRODUCT_COPY_FILES += \
@@ -750,41 +744,6 @@ MASTER_SIDE_CP_TARGET_LIST := msm8996 msm8998 sdm660 sdm845 apq8098_latv sdm710 
 #AUDIO_WRAPPER := libqahw
 #AUDIO_WRAPPER += libqahwwrapper
 
-#INIT
-INIT := init.qcom.composition_type.sh
-INIT += init.target.8x25.sh
-INIT += init.qcom.mdm_links.sh
-INIT += init.qcom.modem_links.sh
-INIT += init.qcom.sensor.sh
-INIT += init.qti.ims.sh
-INIT += init.qcom.coex.sh
-INIT += init.qcom.early_boot.sh
-INIT += init.qcom.post_boot.sh
-INIT += init.qcom.syspart_fixup.sh
-INIT += init.qcom.sdio.sh
-INIT += init.qcom.sh
-INIT += init.qcom.class_core.sh
-INIT += init.class_main.sh
-INIT += init.qcom.wifi.sh
-INIT += vold.fstab
-INIT += init.qcom.usb.rc
-INIT += init.msm.usb.configfs.rc
-INIT += init.qcom.usb.sh
-INIT += usf_post_boot.sh
-INIT += init.qcom.efs.sync.sh
-INIT += ueventd.qcom.rc
-INIT += qca6234-service.sh
-INIT += ssr_setup
-INIT += enable_swap.sh
-INIT += init.mdm.sh
-INIT += fstab.qti
-INIT += init.qcom.sensors.sh
-INIT += init.qcom.crashdata.sh
-INIT += init.qcom.vendor.rc
-INIT += init.target.vendor.rc
-
-PRODUCT_PACKAGES += $(INIT)
-
 # Don't use dynamic DRM HAL for non-go SPs
 ifneq ($(TARGET_HAS_LOW_RAM),true)
 PRODUCT_PACKAGES += android.hardware.drm@1.2-service.widevine
@@ -818,7 +777,7 @@ PRODUCT_PACKAGE_OVERLAYS += device/qcom/common/product/overlay
 endif
 
 # include additional build utilities
--include device/qcom/common/utils.mk
+#-include device/qcom/common/utils.mk
 
 ifeq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES+= \
@@ -844,7 +803,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.backup.ntpServer=0.pool.ntp.org \
     sys.vendor.shutdown.waittime=500
 
-PRODUCT_PRIVATE_KEY := device/qcom/common/qcom.key
+#PRODUCT_PRIVATE_KEY := device/qcom/common/qcom.key
 
 # Display/Graphics
 PRODUCT_PACKAGES += \
@@ -863,8 +822,6 @@ PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.crypto.volume.filenames_mode = "aes-256-cts" \
 	ro.crypto.allow_encrypt_override = true
-
-AUDIO_FEATURE_ENABLED_DLKM := true
 
 PRODUCT_PACKAGES += blank_screen \
 		  bootanimation \
