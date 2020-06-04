@@ -1,7 +1,7 @@
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 # GSI AVB Public Keys
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     q-gsi.avbpubkey \
     r-gsi.avbpubkey \
     s-gsi.avbpubkey
@@ -23,18 +23,10 @@ PRODUCT_TARGET_VNDK_VERSION := 29
 PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
-#PRODUCT_BUILD_PRODUCT_IMAGE := true
-#PRODUCT_BUILD_RAMDISK_IMAGE := true
-#PRODUCT_BUILD_SYSTEM_IMAGE := true
-#PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
-#PRODUCT_BUILD_VENDOR_IMAGE := true
-#PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
-#PRODUCT_BUILD_ODM_IMAGE := true
-#PRODUCT_BUILD_CACHE_IMAGE := false
-#PRODUCT_BUILD_USERDATA_IMAGE := false
+PRODUCT_BUILD_VENDOR_IMAGE := true
 
 # Properties
-#PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 # A/B
 AB_OTA_UPDATER := false
@@ -247,7 +239,6 @@ PRODUCT_PACKAGES += \
     liba2dpoffload \
     libbthost_if \
     vendor.qti.hardware.bluetooth_audio@2.0.vendor \
-    vendor.qti.hardware.btconfigstore@1.0.vendor
 
 # WiFi
 PRODUCT_COPY_FILES += \
@@ -513,7 +504,6 @@ PRODUCT_PACKAGES += \
     libcomprcapture \
     libexthwplugin \
     libhdmiedid \
-    libhdmipassthru \
     libhfp \
     libqcompostprocbundle \
     libqcomvisualizer \
@@ -629,23 +619,14 @@ PRODUCT_COPY_FILES += \
 #PRODUCT_PACKAGES += \
     lineage.biometrics.fingerprint.inscreen@1.1-service.lmi
 
-# RRO configuration
-TARGET_USES_RRO := true
-
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.qcom.bluetooth.soc=hastings \
 	ro.sf.lcd_density=560
 
-#QMAA global flag for modular architecture
-#true means QMAA is enabled for system
-#false means QMAA is disabled for system
-TARGET_USES_QMAA := false
-
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 QCOM_BOARD_PLATFORMS += kona
-TARGET_USES_QSSI := true
 
 #Indicator for each enabled QMAA HAL for this target. Each tech team locally verified their QMAA HAL and ensure code is updated/merged, then add their HAL module name to QMAA_ENABLED_HAL_MODULES as an QMAA enabling completion indicator
 QMAA_ENABLED_HAL_MODULES :=
@@ -769,13 +750,6 @@ PRODUCT_COPY_FILES := \
     frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml \
     frameworks/native/data/etc/android.software.verified_boot.xml:system/etc/permissions/android.software.verified_boot.xml
 
-ifneq ($(strip $(TARGET_USES_RRO)),true)
-# enable overlays to use our version of
-# source/resources etc.
-DEVICE_PACKAGE_OVERLAYS += device/qcom/common/device/overlay
-PRODUCT_PACKAGE_OVERLAYS += device/qcom/common/product/overlay
-endif
-
 # include additional build utilities
 #-include device/qcom/common/utils.mk
 
@@ -806,7 +780,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #PRODUCT_PRIVATE_KEY := device/qcom/common/qcom.key
 
 # Display/Graphics
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.hardware.configstore@1.0-service \
     android.hardware.broadcastradio@1.0-impl
 
