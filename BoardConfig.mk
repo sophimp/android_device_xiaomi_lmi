@@ -52,7 +52,7 @@ BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.device=PARTUUID=cb4b5e18-99ee-c90e-5d13-618a64accec8
 #BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 #BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
-BOARD_KERNEL_IMAGE_NAME := Image.gz
+BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_RAMDISK_OFFSET := 0x1000000
 BOARD_KERNEL_TAGS_OFFSET := 0x100
@@ -60,18 +60,15 @@ BOARD_KERNEL_SECOND_OFFSET := 0xf00000
 BOARD_KERNEL_OFFSET := 0x8000
 TARGET_KERNEL_ARCH := arm64
 
-BUILD_WITHOUT_VENDOR := true
+#BUILD_WITHOUT_VENDOR := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_KERNEL_SEPARATED_DTBO := true # TODO: set to true when we build our own kernel
-#BOARD_KERNEL_SEPARATED_DT := true # TODO: set to true when we build our own kernel
-
-# kernel dtbo compile rule, can not both set with BOARD_KERNEL_SEPARATED_DTBO
-#TARGET_NEEDS_DTBOIMAGE := true
+#BOARD_KERNEL_SEPARATED_DTBO := true # TODO: set to true when we build our own kernel
+#BOARD_KERNEL_SEPARATED_DT := true # 
 
 #BOARD_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel-stock
-#BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo-stock.img
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo-stock.img
 # used to build dtbo.img target of makefile rules 
-BOARD_PREBUILT_DTBOIMAGE := out/target/product/lmi/dtbo/arch/arm64/boot/dtbo.img
+#BOARD_PREBUILT_DTBOIMAGE := out/target/product/lmi/dtbo/arch/arm64/boot/dtbo.img
 #BOARD_CUSTOM_DTBOIMG_MK := $(DEVICE_PATH)/dtbo_cus.mk
 #BOARD_PREBUILT_DTIMAGE_DIR := 
 
@@ -155,12 +152,12 @@ BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/android.hardware.gnss@2.0-service-qti.xml
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/android.hardware.usb@1.1-service.xml
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.gnss@3.0-service.xml
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.hardware.display.allocator-service.xml
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.hardware.display.composer-service.xml
 DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
+#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/android.hardware.gnss@2.0-service-qti.xml
+#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/android.hardware.usb@1.1-service.xml
+#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.gnss@3.0-service.xml
+#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.hardware.display.allocator-service.xml
 
 #VENDOR_MANIFEST_FILE := $(DEVICE_PATH)/configs/legacy_compatible.xml
 
