@@ -2,6 +2,8 @@
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+# Shipping API level
+$(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -9,8 +11,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 # Inherit vendor
 $(call inherit-product, vendor/xiaomi/lmi/lmi-vendor.mk)
 
-# Shipping API level
-$(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
+# Setup dalvik vm configs
+$(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
 PRODUCT_TARGET_VNDK_VERSION := 29
 PRODUCT_SHIPPING_API_LEVEL := 29
@@ -18,8 +20,12 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
 PRODUCT_BUILD_VENDOR_IMAGE := true
 
+PRODUCT_ENFORCE_RRO_TARGETS := *
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
+    $(LOCAL_PATH)/overlay-lineage/lineage-sdk
+
 # Properties
-PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+#PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 # A/B
 AB_OTA_UPDATER := false
@@ -138,6 +144,7 @@ PRODUCT_COPY_FILES += \
 #PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
 
+# Common init scripts
 PRODUCT_PACKAGES += \
 	capture.sh \
     capture_headset.sh \
@@ -158,15 +165,6 @@ PRODUCT_PACKAGES += \
     init.qti.chg_policy.sh \
     init.qti.fm.sh \
     init.qti.ims.sh \
-    playback.sh \
-    playback_headset.sh \
-    qca6234-service.sh \
-    setup_backmic2headphone.sh \
-    setup_headsetmic2headphone.sh \
-    setup_headsetmic2receiver.sh \
-    setup_mainmic2headphone.sh \
-    setup_topmic2headphone.sh \
-    teardown_loopback.sh \
     init.msm.usb.configfs.rc \
     init.qcom.factory.rc \
     init.qcom.rc \
@@ -195,6 +193,7 @@ PRODUCT_PACKAGES += \
 
 # Health
 PRODUCT_PACKAGES += \
+    android.hardware.health@2.0-impl \
     android.hardware.health@2.0-service
 
 # HIDL
@@ -246,8 +245,8 @@ PRODUCT_COPY_FILES += \
 
 # LiveDisplay
 PRODUCT_PACKAGES += \
-	vendor.lineage.livedisplay@2.0-service-legacymm \
     vendor.lineage.livedisplay@2.0-service-sysfs \
+    vendor.lineage.livedisplay@2.0-service.xiaomi_lmi \
     vendor.lineage.livedisplay@2.0-service-sdm 
 
 # Media
@@ -267,19 +266,19 @@ PRODUCT_COPY_FILES += \
 
 # NFC
 PRODUCT_PACKAGES += \
-    android.hardware.nfc@1.0:64 \
-    android.hardware.nfc@1.1:64 \
-    android.hardware.nfc@1.2:64 \
-    android.hardware.secure_element@1.0:64 \
-    android.hardware.secure_element@1.1:64 \
     com.android.nfc_extras \
+    NfcNci \
+    SecureElement \
     Tag \
-    vendor.nxp.nxpese@1.0:64 \
-    vendor.nxp.nxpnfc@1.0:64
+    android.hardware.nfc@1.2-service
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
+    $(LOCAL_PATH)/configs/libnfc-nxp.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nxp.conf
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.2-service-qti
+    android.hardware.power@1.2-service.xiaomi_lmi
 
 # QMI
 PRODUCT_PACKAGES += \
@@ -328,7 +327,8 @@ PRODUCT_COPY_FILES += \
 # WiFi Display
 PRODUCT_PACKAGES += \
     libnl \
-    libdisplayconfig.vendor \
+
+    #libdisplayconfig.vendor \
     libqdMetaData \
     libqdMetaData.system \
     libqdMetaData.vendor
@@ -385,8 +385,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.0-service \
-    android.hardware.drm@1.2-service.clearkey \
-    android.hardware.drm@1.2-service.widevine
+    android.hardware.drm@1.2-service.clearkey
+
+    #android.hardware.drm@1.2-service.widevine
 
 # GPS
 PRODUCT_COPY_FILES += \
@@ -515,24 +516,37 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.vibrator@1.2-service
 
 #Camera
-PRODUCT_PACKAGES += \
-	android.hardware.camera.provider@2.4-impl \
+PRODUCT_PACKAGES +=  \
+	android.hardware.camera.provider@2.4-service_64 \
+    android.hardware.camera.provider@2.4-impl \
+    libdng_sdk.vendor \
+    Snap \
     android.hardware.camera.provider@2.4-service \
     camera.device@3.2-impl \
 	camera.device@1.0-impl \
-	Snap
+    vendor.qti.hardware.camera.device@1.0.vendor
+
+# Camera Motor
+PRODUCT_PACKAGES += \
+    vendor.lineage.camera.motor@1.0-service.xiaomi_lmi
 
 # Display
 PRODUCT_PACKAGES += \
-	android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.composer@2.3-service \
+    android.hardware.memtrack@1.0-impl \
+    android.hardware.memtrack@1.0-service \
+    libdrm.vendor \
+    libgui_vendor \
+    libtinyxml \
+    libvulkan \
+    vendor.display.config@1.7
+
+	#android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.mapper@2.0-impl \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
-    libtinyxml \
-    libvulkan \
-    vendor.display.config@1.7 \
     vendor.qti.hardware.display.allocator-service \
     vendor.qti.hardware.display.allocator@1.0-service \
     vendor.qti.hardware.display.allocator@1.0.vendor \
@@ -548,7 +562,7 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@2.0-impl-qti-display 
 
 # Display interfaces
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     vendor.display.config@1.0.vendor \
     vendor.display.config@1.1.vendor \
     vendor.display.config@1.2.vendor \
@@ -606,11 +620,11 @@ PRODUCT_PACKAGES += \
 #TARGET_HAS_FOD := true
 
 # Fingerprint
+PRODUCT_PACKAGES += \
+    vendor.lineage.biometrics.fingerprint.inscreen@1.0-service.xiaomi_lmi
+
 PRODUCT_COPY_FILES += \
     vendor/lineage/config/permissions/vendor.lineage.biometrics.fingerprint.inscreen.xml:system/etc/permissions/vendor.lineage.biometrics.fingerprint.inscreen.xml
-
-#PRODUCT_PACKAGES += \
-    lineage.biometrics.fingerprint.inscreen@1.1-service.lmi
 
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -620,10 +634,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 QCOM_BOARD_PLATFORMS += kona
-
-#Indicator for each enabled QMAA HAL for this target. Each tech team locally verified their QMAA HAL and ensure code is updated/merged, then add their HAL module name to QMAA_ENABLED_HAL_MODULES as an QMAA enabling completion indicator
-QMAA_ENABLED_HAL_MODULES :=
-QMAA_ENABLED_HAL_MODULES += sensors
 
 #Default vendor image configuration
 ENABLE_VENDOR_IMAGE := true
@@ -658,9 +668,6 @@ PRODUCT_PACKAGES += \
 # Userdata checkpoint
 PRODUCT_PACKAGES += \
     checkpoint_gc
-
-# Enable binderized camera HAL
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 
 # Kernel modules install path
 #KERNEL_MODULES_INSTALL := dlkm
@@ -712,21 +719,6 @@ MSM_VIDC_TARGET_LIST := msm8974 msm8610 msm8226 apq8084 msm8916 msm8994 msm8909 
 #List of targets that use master side content protection
 MASTER_SIDE_CP_TARGET_LIST := msm8996 msm8998 sdm660 sdm845 apq8098_latv sdm710 qcs605 msmnile $(MSMSTEPPE) $(TRINKET) kona lito atoll bengal
 
-#AUDIO_HARDWARE := audio.primary.kona
-#AUDIO_POLICY := audio_policy.kona
-#HAL Wrapper
-#AUDIO_WRAPPER := libqahw
-#AUDIO_WRAPPER += libqahwwrapper
-
-# Don't use dynamic DRM HAL for non-go SPs
-ifneq ($(TARGET_HAS_LOW_RAM),true)
-PRODUCT_PACKAGES += android.hardware.drm@1.2-service.widevine
-PRODUCT_PACKAGES += android.hardware.drm@1.2-service.clearkey
-else
-PRODUCT_PACKAGES += android.hardware.drm@1.2-service-lazy.widevine
-PRODUCT_PACKAGES += android.hardware.drm@1.2-service-lazy.clearkey
-endif
-
 ifeq ($(strip $(OTA_FLAG_FOR_DRM)),true)
 PRODUCT_PACKAGES += move_widevine_data.sh
 endif
@@ -751,32 +743,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES+= \
     ro.adb.secure=1
 endif
 
-# OEM Unlock reporting
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    ro.oem_unlock_supported=1
-
-ifeq ($(TARGET_HAS_LOW_RAM),true)
-    PRODUCT_PROPERTY_OVERRIDES += \
-        persist.vendor.qcomsysd.enabled=0
-else
-    PRODUCT_PROPERTY_OVERRIDES += \
-        persist.vendor.qcomsysd.enabled=1
-endif
-
-PRODUCT_PACKAGES_DEBUG += \
-	init.qti.debug-kona.sh 
-    
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.backup.ntpServer=0.pool.ntp.org \
-    sys.vendor.shutdown.waittime=500
-
-#PRODUCT_PRIVATE_KEY := device/qcom/common/qcom.key
-
-# Display/Graphics
-#PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.0-service \
-    android.hardware.broadcastradio@1.0-impl
-
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
@@ -786,7 +752,7 @@ PRODUCT_VENDOR_MOVE_ENABLED := true
 #----------------------------------------------------------------------
 #include device/qcom/wlan/msmnile/wlan.mk
 
-PRODUCT_PROPERTY_OVERRIDES += \
+#PRODUCT_PROPERTY_OVERRIDES += \
 	ro.crypto.volume.filenames_mode = "aes-256-cts" \
 	ro.crypto.allow_encrypt_override = true
 
@@ -886,3 +852,34 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libtinyxml2
 
+# TextClassifier
+PRODUCT_PACKAGES += \
+    textclassifier.bundle1
+
+# VNDK-SP
+PRODUCT_PACKAGES += \
+    vndk_package
+
+# GPS
+PRODUCT_PACKAGES += \
+    libbatching \
+    libgeofencing \
+    libgnss \
+
+    #libgnsspps
+
+PRODUCT_PACKAGES += \
+    android.hardware.gnss@2.0-impl-qti \
+    android.hardware.gnss@2.0-service-qti
+
+# Sensors
+PRODUCT_PACKAGES += \
+    android.hardware.sensors@1.0-impl \
+    android.hardware.sensors@1.0-service \
+    libsensorndkbridge
+
+# VR
+PRODUCT_PACKAGES += \
+    android.hardware.vr@1.0-impl \
+    android.hardware.vr@1.0-service \
+    vr.kona
