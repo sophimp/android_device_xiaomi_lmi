@@ -19,6 +19,6 @@
 #type sysfs_tp_fodstatus, sysfs_type, fs_type;
 #type sysfs_kgsl, sysfs_type, fs_type;
 
-type existing_folders_file, file_type;
+#type existing_folders_file, file_type;
 
 #type qti_init_shell_exec, file_type;

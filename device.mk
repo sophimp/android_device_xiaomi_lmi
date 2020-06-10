@@ -1,4 +1,6 @@
 
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
@@ -18,14 +20,15 @@ PRODUCT_TARGET_VNDK_VERSION := 29
 PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
-PRODUCT_BUILD_VENDOR_IMAGE := true
+#PRODUCT_BUILD_VENDOR_IMAGE := true
+PRODUCT_BUILD_PRODUCT_IMAGE := true
 
-PRODUCT_ENFORCE_RRO_TARGETS := *
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
+#PRODUCT_ENFORCE_RRO_TARGETS := *
+#PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
     $(LOCAL_PATH)/overlay-lineage/lineage-sdk
 
 # Properties
-#PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 # A/B
 AB_OTA_UPDATER := false
@@ -176,11 +179,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fastbootd
 
-# Ramdisk
+# fstab
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom \
     $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/hw/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom \
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
 
 
 # Seccomp
@@ -230,6 +233,9 @@ PRODUCT_PACKAGES += \
     audio.bluetooth.default \
     liba2dpoffload \
     libbthost_if \
+	libbt-vendor \
+	btconfig \
+	libbt-hidlclient \
     vendor.qti.hardware.bluetooth_audio@2.0.vendor \
 
 # WiFi
@@ -412,6 +418,7 @@ PRODUCT_PACKAGES += \
 # Media OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
+	libplatformconfig \
     libcodec2_hidl@1.0.vendor \
     libcodec2_vndk.vendor \
     libOmxCore \
@@ -436,16 +443,13 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service.rc
 
 # Update engine
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     update_engine \
     update_engine_sideload \
     update_verifier
 
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client
-
 # Cryptfshw
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     vendor.qti.hardware.cryptfshw@1.0
 
 # Vendor libstdc++
@@ -483,6 +487,7 @@ PRODUCT_PACKAGES += \
  
 # Audio
 PRODUCT_PACKAGES += \
+    libaacwrapper \
     android.hardware.audio@2.0-service \
     android.hardware.audio@5.0-impl \
     android.hardware.audio.effect@5.0-impl \
@@ -500,6 +505,8 @@ PRODUCT_PACKAGES += \
     libhdmiedid \
     libhfp \
     libqcompostprocbundle \
+	libqahwwrapper \
+	libqahw \
     libqcomvisualizer \
     libqcomvoiceprocessing \
     libsndmonitor \
@@ -539,9 +546,8 @@ PRODUCT_PACKAGES += \
     libgui_vendor \
     libtinyxml \
     libvulkan \
-    vendor.display.config@1.7
-
-	#android.hardware.graphics.allocator@2.0-impl \
+    vendor.display.config@1.7 \
+	android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.mapper@2.0-impl \
@@ -550,7 +556,16 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.allocator-service \
     vendor.qti.hardware.display.allocator@1.0-service \
     vendor.qti.hardware.display.allocator@1.0.vendor \
-    copybit.kona \
+	libhistogram \
+	libgpu_tonemapper \
+	vendor.qti.hardware.display.composer-service \
+	light.kona \
+	libqservice \
+	libsdedrm \
+	libsdmcore \
+	libsdmutils \
+	keystore.kona \
+    copybit \
     gralloc.kona \
     hdmi_cec.kona \
     hwcomposer.kona \
@@ -562,7 +577,7 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@2.0-impl-qti-display 
 
 # Display interfaces
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     vendor.display.config@1.0.vendor \
     vendor.display.config@1.1.vendor \
     vendor.display.config@1.2.vendor \
@@ -628,7 +643,13 @@ PRODUCT_COPY_FILES += \
 
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.bluetooth.a2dp_offload.supported=false \
+    persist.bluetooth.a2dp_offload.disabled=true \
+    vendor.audio.feature.a2dp_offload.enable=false \
+    persist.vendor.qcom.bluetooth.enable.splita2dp=false \
+    ro.bluetooth.library_name=libbluetooth.so \
     vendor.qcom.bluetooth.soc=hastings \
+    vendor.camera.aux.packagelist=org.lineageos.snap,net.sourceforge.opencamera,com.google.android.GoogleCamera \
 	ro.sf.lcd_density=560
 
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
@@ -756,7 +777,7 @@ PRODUCT_VENDOR_MOVE_ENABLED := true
 	ro.crypto.volume.filenames_mode = "aes-256-cts" \
 	ro.crypto.allow_encrypt_override = true
 
-PRODUCT_PACKAGES += blank_screen \
+#PRODUCT_PACKAGES += blank_screen \
 		  bootanimation \
 		  libgui \
 		  libpixelflinger \
@@ -765,7 +786,6 @@ PRODUCT_PACKAGES += blank_screen \
 		  libui \
 		  surfaceflinger \
 		  appwidget \
-		  BackupRestoreConfirmation \
 		  android.test.base \
 		  android.test.mock \
 		  android.test.runner \
@@ -833,7 +853,7 @@ PRODUCT_PACKAGES += blank_screen \
 		  wm
 
 # Codec2 modules
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     com.android.media.swcodec \
     libsfplugin_ccodec
 

@@ -1810,6 +1810,15 @@ vendor/lib64/libdisplayconfig.so
 vendor/lib64/vendor.qti.hardware.wifidisplaysession@1.0.so
 vendor/lib/libdisplayconfig.so
 
+# Soundfx - from guacamole QKQ1.190716.003
+vendor/lib/soundfx/libvolumelistener.so
+vendor/lib64/soundfx/libvolumelistener.so
+
+# Telephony
+etc/permissions/privapp-permissions-qti.xml
+etc/sysconfig/qti_whitelist.xml
+product/etc/permissions/telephony_product_privapp-permissions-qti.xml
+
 # these files can not be found from Redmi k30 pro dump blobs
 #lib64/libdiag_system.so
 #vendor/bin/hw/vendor.qti.hardware.mlshal@1.0-service

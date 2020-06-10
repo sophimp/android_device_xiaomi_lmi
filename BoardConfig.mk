@@ -47,9 +47,9 @@ TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 BOARD_KERNEL_BASE := 0x0000
 # get from unpack authentication boot.img
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm 
-BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true
-BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
+#BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true
+#BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
+#BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=1.0
 #BOARD_KERNEL_CMDLINE += androidboot.keymaster=1
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.device=PARTUUID=cb4b5e18-99ee-c90e-5d13-618a64accec8
@@ -64,13 +64,11 @@ BOARD_KERNEL_OFFSET := 0x8000
 TARGET_KERNEL_ARCH := arm64
 
 TARGET_KERNEL_CLANG_COMPILE := true
+NEED_KERNEL_MODULE_SYSTEM:= true
 
-#BUILD_WITHOUT_VENDOR := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 #BOARD_KERNEL_SEPARATED_DTBO := true # TODO: set to true when we build our own kernel
-#BOARD_KERNEL_SEPARATED_DT := true # 
 
-#BOARD_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel-stock
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo-stock.img
 # used to build dtbo.img target of makefile rules 
 #BOARD_PREBUILT_DTBOIMAGE := out/target/product/lmi/dtbo/arch/arm64/boot/dtbo.img
@@ -84,13 +82,11 @@ BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_MKBOOTIMG_ARGS := --cmdline $(BOARD_KERNEL_CMDLINE)
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-#BOARD_MKBOOTIMG_ARGS += --kernel $(DEVICE_PATH)/prebuilt/kernel-stock
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --second_offset $(BOARD_KERNEL_SECOND_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
-#BOARD_MKBOOTIMG_ARGS += --ramdisk $(DEVICE_PATH)/prebuilt/ramdisk-stock
-#BOARD_MKBOOTIMG_ARGS += --dtb $(DEVICE_PATH)/prebuilt/Qualcomm_kona_integrate.dtb
+#BOARD_MKBOOTIMG_ARGS += --ramdisk $(DEVICE_PATH)/prebuilt/ramdisk-fstab
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE) --board ""
 
 BOARD_USES_QCOM_HARDWARE := true
@@ -102,6 +98,7 @@ BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS := bt_firmware dsp firmware persist metadata
 
 BOARD_SUPPRESS_SECURE_ERASE := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144
@@ -114,7 +111,7 @@ BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
 
 BOARD_SUPER_PARTITION_SIZE := 9126805504
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product odm
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system product vendor odm
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9126805504
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 BOARD_VENDORIMAGE_PARTITION_SIZE := 1610612736
@@ -129,6 +126,7 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_ODM := odm
 #BOARD_EXT4_SHARE_DUP_BLOCKS := true
+BUILD_WITHOUT_VENDOR := true
 
 BOARD_USES_PRODUCTIMAGE := true
 
@@ -142,31 +140,45 @@ BOARD_USES_SYSTEM_AS_BOOT := true
 
 # Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
-#BOARD_USES_RECOVERY_AS_BOOT := false
+BOARD_USES_RECOVERY_AS_BOOT := false
 TARGET_NO_RECOVERY := false
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 TARGET_USES_MKE2FS := true
 
 TARGET_RAMDISK_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 
 # Sepolicy
-include device/lineage/sepolicy/common/sepolicy.mk
-include device/qcom/sepolicy/sepolicy.mk
+#include device/lineage/sepolicy/common/sepolicy.mk
+
+-include device/qcom/sepolicy/sepolicy.mk
+
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
-BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+
+#BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+#BOARD_SEPOLICY_DIRS +=  \
+	device/qcom/sepolicy/generic/vendor/common \
+	device/qcom/sepolicy/generic/vendor/kona 
+
+#BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
+    device/qcom/sepolicy/generic/private \
+    device/qcom/sepolicy/qva/private
+
+#BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
+    device/qcom/sepolicy/generic/public \
+    device/qcom/sepolicy/qva/public
+
 
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.hardware.display.composer-service.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/vendor.qti.hardware.display.allocator-service.xml
 DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 
 #VENDOR_MANIFEST_FILE := $(DEVICE_PATH)/configs/legacy_compatible.xml
 
-#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/vendor.qti.hardware.display.composer-service.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := $(DEVICE_PATH)/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/framework_compatibility_matrix.xml
 
@@ -181,16 +193,15 @@ PRODUCT_VENDOR_MOVE_ENABLED := true
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --do_not_use_ab
 
 # Properties
-BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
-TARGET_ODM_PROP += $(DEVICE_PATH)/odm.prop
-TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
-TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
-TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
+#BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
+#TARGET_ODM_PROP += $(DEVICE_PATH)/odm.prop
+#TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+#TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
+#TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)/releasetools
@@ -307,8 +318,7 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Encryption
 #TARGET_HW_DISK_ENCRYPTION := true
-
-TARGET_PROVIDES_KEYMASTER := true
+#TARGET_PROVIDES_KEYMASTER := true
 
 # FM
 BOARD_HAVE_QCOM_FM := true
@@ -333,4 +343,6 @@ OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 	DTC=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/dtc/dtc \
 	MKDTIMG=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/libufdt/mkdtimg
 
+# don not add backuptool into updater_script
+#LINEAGE_BUILD :=
 -include vendor/xiaomi/lmi/BoardConfigVendor.mk
