@@ -1,9 +1,10 @@
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, build/make/target/product/gsi_keys.mk)
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 # Shipping API level
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 
@@ -20,28 +21,18 @@ PRODUCT_TARGET_VNDK_VERSION := 29
 PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
 #PRODUCT_BUILD_VENDOR_IMAGE := true
 PRODUCT_BUILD_PRODUCT_IMAGE := true
-
-#PRODUCT_ENFORCE_RRO_TARGETS := *
-#PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
-    $(LOCAL_PATH)/overlay-lineage/lineage-sdk
+PRODUCT_BUILD_RAMDISK_IMAGE := true
+PRODUCT_BUILD_USERDATA_IMAGE := true
 
 # Properties
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 # A/B
 AB_OTA_UPDATER := false
-
-# Audio
-PRODUCT_COPY_FILES += \
-    frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PRODUCT_TARGET_VNDK_VERSION)/etc/a2dp_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/a2dp_in_audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PRODUCT_TARGET_VNDK_VERSION)/etc/a2dp_in_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PRODUCT_TARGET_VNDK_VERSION)/etc/usb_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PRODUCT_TARGET_VNDK_VERSION)/etc/bluetooth_audio_policy_configuration.xml \
-    $(LOCAL_PATH)/configs/audio/audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PRODUCT_TARGET_VNDK_VERSION)/etc/audio_policy_configuration.xml \
-    $(LOCAL_PATH)/configs/audio/audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PRODUCT_TARGET_VNDK_VERSION)/etc/audio/audio_policy_configuration.xml
-    
+   
 # Exclude sensor from InputManager
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/excluded-input-devices.xml:system/etc/excluded-input-devices.xml \
@@ -90,8 +81,6 @@ PRODUCT_COPY_FILES += \
 
 # Permissions
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
-    frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -143,10 +132,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml
 
-# Skip Mount
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
-
 # Common init scripts
 PRODUCT_PACKAGES += \
 	capture.sh \
@@ -177,14 +162,14 @@ PRODUCT_PACKAGES += \
     ueventd.qcom.rc \
 
 PRODUCT_PACKAGES += \
-	fastbootd
+	fastbootd \
+	android.hardware.fastboot@1.0-impl-mock
 
 # fstab
 PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom \
     $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/hw/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
-
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom
 
 # Seccomp
 PRODUCT_COPY_FILES += \
@@ -192,7 +177,8 @@ PRODUCT_COPY_FILES += \
 
 # For config.fs
 PRODUCT_PACKAGES += \
-    fs_config_files
+    fs_config_files \
+	gpio-keys.kl
 
 # Health
 PRODUCT_PACKAGES += \
@@ -318,7 +304,7 @@ PRODUCT_PACKAGES += \
     telephony-ext
 
 PRODUCT_BOOT_JARS += \
-    telephony-ext
+    telephony-ext \
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -558,7 +544,6 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.allocator@1.0.vendor \
 	libhistogram \
 	libgpu_tonemapper \
-	vendor.qti.hardware.display.composer-service \
 	light.kona \
 	libqservice \
 	libsdedrm \
@@ -575,6 +560,8 @@ PRODUCT_PACKAGES += \
     liboverlay \
     android.hardware.graphics.composer@2.3-service \
     android.hardware.graphics.mapper@2.0-impl-qti-display 
+
+	#vendor.qti.hardware.display.composer-service \
 
 # Display interfaces
 PRODUCT_PACKAGES += \
@@ -662,18 +649,11 @@ ENABLE_VENDOR_IMAGE := true
 # Android EGL implementation
 PRODUCT_PACKAGES += libGLES_android
 
-# Boot control HAL test app
-#PRODUCT_PACKAGES_DEBUG += bootctl
-
-#PRODUCT_STATIC_BOOT_CONTROL_HAL := \
-		  libz \
-		  libcutils
-
-
 # QRTR related packages
-PRODUCT_PACKAGES += qrtr-ns \
-			qrtr-lookup \
-			libqrtr 
+#PRODUCT_PACKAGES +=  \
+	qrtr-ns \
+	qrtr-lookup \
+	libqrtr 
 
 # Context hub HAL
 PRODUCT_PACKAGES += \
@@ -690,11 +670,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     checkpoint_gc
 
-# Kernel modules install path
-#KERNEL_MODULES_INSTALL := dlkm
-#KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
-#AUDIO_FEATURE_ENABLED_DLKM := true
-
 # FaceAuth feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.biometrics.face.xml \
@@ -706,6 +681,8 @@ PRODUCT_PACKAGES += \
 # Vendor property to enable advanced network scanning
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.radio.enableadvancedscan=true
+
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 #Product property overrides to configure the Dalvik heap
 PRODUCT_PROPERTY_OVERRIDES  += \
@@ -752,7 +729,7 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs
 
-PRODUCT_COPY_FILES := \
+PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml \
     frameworks/native/data/etc/android.software.verified_boot.xml:system/etc/permissions/android.software.verified_boot.xml
 
@@ -771,98 +748,11 @@ PRODUCT_VENDOR_MOVE_ENABLED := true
 #----------------------------------------------------------------------
 # wlan specific
 #----------------------------------------------------------------------
-#include device/qcom/wlan/msmnile/wlan.mk
+#include device/qcom/wlan/kona/wlan.mk
 
 #PRODUCT_PROPERTY_OVERRIDES += \
 	ro.crypto.volume.filenames_mode = "aes-256-cts" \
 	ro.crypto.allow_encrypt_override = true
-
-#PRODUCT_PACKAGES += blank_screen \
-		  bootanimation \
-		  libgui \
-		  libpixelflinger \
-		  libsurfaceflinger \
-		  libsurfaceflinger_ddmconnection \
-		  libui \
-		  surfaceflinger \
-		  appwidget \
-		  android.test.base \
-		  android.test.mock \
-		  android.test.runner \
-		  audioserver \
-		  app_process \
-		  cameraserver \
-		  com.android.location.provider \
-		  ContactsProvider \
-		  DefaultContainerService \
-		  DownloadProvider \
-		  ExtServices \
-		  ExtShared \
-		  ims-common \
-		  libaaudio \
-		  libamidi \
-		  libandroid \
-		  libandroidfw \
-		  libandroid_runtime \
-		  libandroid_servers \
-		  libaudioeffect_jni \
-		  libaudioflinger \
-		  libaudiopolicymanager \
-		  libaudiopolicyservice \
-		  libaudioutils \
-		  libcamera2ndk \
-		  libcamera_client \
-		  libcameraservice \
-		  libdrmframework \
-		  libdrmframework_jni \
-		  libEGL \
-		  libETC1 \
-		  libFFTEm \
-		  libGLESv1_CM \
-		  libGLESv2 \
-		  libGLESv3 \
-		  libmedia \
-		  libmedia_jni \
-		  libmediandk \
-		  libmediaplayerservice \
-		  libsoundpool \
-		  libsoundtrigger \
-		  libsoundtriggerservice \
-		  libstagefright \
-		  libstagefright_amrnb_common \
-		  libstagefright_enc_common \
-		  libstagefright_foundation \
-		  libstagefright_omx \
-		  libwifi-service \
-		  media \
-		  media_cmd \
-		  mediadrmserver \
-		  mediaextractor \
-		  mediametrics \
-		  MediaProvider \
-		  mediaserver \
-		  PackageInstaller \
-		  PermissionController \
-		  SettingsProvider \
-		  telecom \
-		  telephony-common \
-		  voip-common \
-		  WallpaperBackup \
-		  wificond \
-		  wifi-service \
-		  wm
-
-# Codec2 modules
-#PRODUCT_PACKAGES += \
-    com.android.media.swcodec \
-    libsfplugin_ccodec
-
-# IFAA manager
-PRODUCT_PACKAGES += \
-    org.ifaa.android.manager
-
-PRODUCT_BOOT_JARS += \
-    org.ifaa.android.manager
 
 # Insmod files
 PRODUCT_COPY_FILES += \
@@ -903,3 +793,37 @@ PRODUCT_PACKAGES += \
     android.hardware.vr@1.0-impl \
     android.hardware.vr@1.0-service \
     vr.kona
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.backup.ntpServer=0.pool.ntp.org \
+    sys.vendor.shutdown.waittime=500
+
+PRODUCT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/bootdevice/by-name/config
+
+PRODUCT_PRIVATE_KEY := device/qcom/common/qcom.key
+
+# Kernel modules install path
+#KERNEL_MODULES_INSTALL := dlkm
+#KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTALL)/lib/modules
+
+# Audio configuration file
+#-include hardware/qcom-caf/kona/audio/configs/kona/kona.mk
+#AUDIO_FEATURE_ENABLED_AHAL_EXT := true
+
+# Kernel configurations
+#TARGET_KERNEL_VERSION := 4.19
+#Enable llvm support for kernel
+#KERNEL_LLVM_SUPPORT := true
+#Enable sd-llvm support for kernel
+#KERNEL_SD_LLVM_SUPPORT := true
+
+###################################################################################
+# This is the End of target.mk file.
+# Now, Pickup other split product.mk files:
+###################################################################################
+# TODO: Relocate the system product.mk files pickup into qssi lunch, once it is up.
+#$(foreach sdefs, $(sort $(wildcard vendor/qcom/defs/product-defs/system/*.mk)), \
+    $(call inherit-product, $(sdefs)))
+#$(foreach vdefs, $(sort $(wildcard vendor/qcom/defs/product-defs/vendor/*.mk)), \
+    $(call inherit-product, $(vdefs)))
+###################################################################################

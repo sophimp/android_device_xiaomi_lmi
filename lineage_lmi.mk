@@ -32,9 +32,9 @@ PRODUCT_CHARACTERISTICS := nosdcard
 #PRODUCT_SUPPORTS_BOOT_SIGNER := true
 
 # Set BUILD_FINGERPRINT variable to be picked up by both system and vendor build.prop
-BUILD_FINGERPRINT := "Redmi/lmi/lmi:10/QKQ1.191117.002/V11.0.16.0.QJKCNXM:user/dev-keys"
+BUILD_FINGERPRINT := "Redmi/lmi/lmi:10/QKQ1.191117.002/V11.0.16.0.QJKCNXM:user/release-keys"
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE=lmi \
     PRODUCT_NAME=lmi \
-	PRIVATE_BUILD_DESC="qssi-user 10 QKQ1.191117.002 V11.0.16.0.QJKCNXM dev-keys"
+	PRIVATE_BUILD_DESC="qssi-user 10 QKQ1.191117.002 V11.0.16.0.QJKCNXM release-keys"

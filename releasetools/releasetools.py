@@ -26,7 +26,7 @@ from common import BlockDifference, EmptyImage, GetUserImage
 #   know that an image is present in source build but not in target build.
 USERIMAGE_PARTITIONS = [
     "product",
-    "odm",
+    #"odm",
 ]
 
 def GetUserImages(input_tmp, input_zip):
@@ -68,7 +68,7 @@ def AddImage(info, basename, dest):
 
 def OTA_InstallEnd(info):
   info.script.Print("Patching firmware images...")
-  AddImage(info, "vbmeta_system.img", "/dev/block/bootdevice/by-name/vbmeta_system")
-  AddImage(info, "dtbo.img", "/dev/block/bootdevice/by-name/dtbo")
-  AddImage(info, "vbmeta.img", "/dev/block/bootdevice/by-name/vbmeta")
+  #AddImage(info, "vbmeta_system.img", "/dev/block/bootdevice/by-name/vbmeta_system")
+  #AddImage(info, "dtbo.img", "/dev/block/bootdevice/by-name/dtbo")
+  #AddImage(info, "vbmeta.img", "/dev/block/bootdevice/by-name/vbmeta")
   return
