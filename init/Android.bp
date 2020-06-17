@@ -1,0 +1,9 @@
+cc_library_static {
+    name: "libinit_kona",
+    recovery_available: true,
+    srcs: ["init_kona.cpp"],
+    include_dirs: [
+        "system/core/base/include",
+        "system/core/init"
+    ]
+}

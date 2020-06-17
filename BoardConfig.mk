@@ -52,7 +52,7 @@ BOARD_KERNEL_BASE := 0x0000
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm 
 #BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true
 #BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
+#BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.avb_version=1.0
 #BOARD_KERNEL_CMDLINE += androidboot.keymaster=1
 #BOARD_KERNEL_CMDLINE += androidboot.vbmeta.device=PARTUUID=cb4b5e18-99ee-c90e-5d13-618a64accec8
@@ -310,7 +310,8 @@ OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 #TARGET_NO_RPC := true
 
 #TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
-#TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_msm
+TARGET_INIT_VENDOR_LIB := libinit_kona
+TARGET_RECOVERY_DEVICE_MODULES := libinit_kona
 
 #Add non-hlos files to ota packages
 #ADD_RADIO_FILES := true

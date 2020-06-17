@@ -160,6 +160,7 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     fstab.qcom \
     ueventd.qcom.rc \
+	libinit_kona
 
 PRODUCT_PACKAGES += \
 	fastbootd \
