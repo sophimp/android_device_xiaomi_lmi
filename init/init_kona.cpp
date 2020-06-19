@@ -76,7 +76,6 @@ void init_msm_properties(unsigned long soc, unsigned long socrev, char *board)
     UNUSED(soc);
     UNUSED(socrev);
     UNUSED(board);
-    property_set(PROP_LCDDENSITY, "395");
 }
 
 int read_file2(const char *fname, char *data, int max_size)
